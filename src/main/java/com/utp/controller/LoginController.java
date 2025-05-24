@@ -1,6 +1,9 @@
-package com.utp.heladeriaBreezemvc.controller;
+package com.utp.controller;
 
-import com.utp.heladeriaBreezemvc.service.*;
+import com.utp.model.*;
+import com.utp.security.*;
+import com.utp.service.*;
+
 import java.util.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
