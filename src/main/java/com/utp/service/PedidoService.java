@@ -83,7 +83,7 @@ public class PedidoService {
         Producto producto = productoRepository.findById(productoId)
                 .orElseThrow(() -> new EntityNotFoundException("Producto no encontrado"));
 
-        // Validación de stock por local y tamaño
+        // Validación de stock por local y tamaño para poder cambiar las unidades
         validarStockDisponible(producto, pedido.getLocal(), tamanoId, cantidad);
 
         // Calcular precio y reducir stock
