@@ -16,7 +16,7 @@ public class SecurityUserDetails implements UserDetails {
     public SecurityUserDetails(Usuario usuario) {
         this.usuario = usuario;
     }
-
+    //autenticación segura
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();

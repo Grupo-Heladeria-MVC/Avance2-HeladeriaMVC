@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class SecurityUserDetailsService implements UserDetailsService {
-
+//autenticación segura
     @Autowired
     private UsuarioRepository usuarioRepository;
 
