@@ -2,14 +2,12 @@ package com.utp.model;
 
 import jakarta.persistence.*;
 
-
 @Entity
 @Table(name = "locales")
 public class Local {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    
     private String nombre;
     private String direccion;
     private String telefono;
