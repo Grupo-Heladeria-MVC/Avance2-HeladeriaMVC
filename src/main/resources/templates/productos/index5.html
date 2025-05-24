@@ -89,16 +89,16 @@
                                 </a>
                             </div>
 
-                            <!-- Mensaje de agotado -->
+                            <!-- Mensaje de producto agotado -->
                             <div class="agotado-badge" 
                                  th:if="${producto.stockActual != null && producto.stockActual == 0}">
-                                Agotado
+                                Ups! Agotado
                             </div>
 
-                            <!-- Mensaje de stock bajo -->
+                            <!-- Mensaje de productos con stock bajo -->
                             <div class="bajo-stock-badge" 
                                  th:if="${producto.stockActual != null && producto.stockActual > 0 && producto.stockActual <= 5}">
-                                ¡Últimas unidades!
+                                ¡Aprovecha, Últimas unidades!
                             </div>
 
                         </div>
