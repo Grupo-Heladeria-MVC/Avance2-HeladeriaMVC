@@ -136,7 +136,8 @@ public class PedidoService {
 
         return precioTamano;
     }
-
+    
+    // Añadir metodo de Actualizar el Stock del Producto en tiempo real 
     private void actualizarStockProducto(Producto producto, Local local,
             Integer tamanoId, Integer cantidad) {
         Tamano tamano = obtenerTamano(tamanoId);
@@ -152,7 +153,7 @@ public class PedidoService {
         productoRepository.save(producto);
     }
 
-    // Métodos de ayuda (deberían implementarse con las lógicas correspondientes)
+    // Método de ObtenerStockPorLocal (UDEP O OPENPLAZA)
     private Double obtenerStockPorLocal(Producto producto, Local local) {
         return local.getNombre().equals("Open Plaza")
                 ? producto.getStockOpenPlaza() : producto.getStockUDEP();
