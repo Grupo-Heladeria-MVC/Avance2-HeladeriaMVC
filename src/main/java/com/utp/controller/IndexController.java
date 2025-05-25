@@ -155,6 +155,7 @@ public class IndexController {
         return "cliente/informacion"; //VISTA INFORMACION
     }
 
+    //Añadir método para la barra de busqueda de Productos
     @PostMapping("/search")
     public String searchProduct(@RequestParam String nombre, Model model) {
 
