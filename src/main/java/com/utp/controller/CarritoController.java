@@ -436,7 +436,7 @@ public class CarritoController {
         return true;
     }
 
-    //Guardar la orden en EFECTIVO
+    //Guardar la orden en metodo de pago: EN EFECTIVO
     @GetMapping("/saveOrder")
     @PreAuthorize("hasRole('CLIENTE')")
     public String saveOrder(Authentication authentication, RedirectAttributes redirectAttributes) {
