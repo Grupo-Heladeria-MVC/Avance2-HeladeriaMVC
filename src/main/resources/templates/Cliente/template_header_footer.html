@@ -21,7 +21,7 @@
                     <li><a href="#pasteles-de-cumpleaños">Otros Postres</a></li>
                 </ul>
             </div>
-
+            
             <!-- Barra de búsqueda envuelta en un formulario para su funcionalidad adecuada -->
             <form method="post" th:action="@{/search}">
                 <div class="search-bar">
@@ -29,7 +29,6 @@
                     <button class="search-icon">
                         <img src="https://img.icons8.com/ios-filled/20/search.png" alt="Buscar">
                     </button>
-
                 </div>
             </form>
 
@@ -37,7 +36,6 @@
             <nav class="nav-links">
                 <a th:href="@{/heladeriamvc}">INICIO</a>
                 <a th:href="@{/nosotros}">NOSOTROS</a>
-
                 <!-- Enlace dinámico basado en autenticación -->
                 <a th:if="${#authorization.expression('isAuthenticated()')}" th:href="@{/contacto}">CONTACTO</a>
                 <a th:if="${#authorization.expression('!isAuthenticated()')}" th:href="@{/informacion}">INFORMACIÓN</a>
