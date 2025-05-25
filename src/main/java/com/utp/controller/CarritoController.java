@@ -86,7 +86,7 @@ public class CarritoController {
             Tamano tamano = optionalTamano.get();
             Local local = optionalLocal.get();
 
-            // Obtener stock disponible según el local
+            // Obtener stock disponible según el local y mandar la informacion de cada local
             Double stockDisponible = (local.getNombre().equals("Open Plaza"))
                     ? producto.getStockOpenPlaza() : producto.getStockUDEP();
 
