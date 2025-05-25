@@ -155,7 +155,8 @@ public class CarritoController {
         redirectAttributes.addFlashAttribute("errorMessage", "Error al agregar al carrito");
         return "redirect:/";
     }
-
+    
+    //Metodo para validar el Stock del producto segun el local Seleccionado
     private void actualizarStockLocal(Producto producto, Local local, Double stockARestar) {
         if (local.getNombre().equals("Open Plaza")) {
             producto.setStockOpenPlaza(producto.getStockOpenPlaza() - stockARestar);
