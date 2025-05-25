@@ -258,6 +258,7 @@ public class CarritoController {
         return "cliente/resumenorden";
     }
 
+    //Metodo añadido para el pago con tarjeta
     @GetMapping("/credit-card")
     @PreAuthorize("hasRole('CLIENTE')")
     public String showCreditCardPaymentPage(Model model, Authentication authentication) {
