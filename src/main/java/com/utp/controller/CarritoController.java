@@ -35,7 +35,6 @@ public class CarritoController {
 //
 //    @Autowired
 //    private ContactoService contactoService;
-
     @Autowired
     private SubcategoriaService subcategoriaService;
 
@@ -155,7 +154,7 @@ public class CarritoController {
         redirectAttributes.addFlashAttribute("errorMessage", "Error al agregar al carrito");
         return "redirect:/";
     }
-    
+
     //Metodo para validar el Stock del producto segun el local Seleccionado
     private void actualizarStockLocal(Producto producto, Local local, Double stockARestar) {
         if (local.getNombre().equals("Open Plaza")) {
@@ -477,6 +476,7 @@ public class CarritoController {
 
     }
 
+    //Metodo para pagar con Yape
     @GetMapping("/yape-payment")
     @PreAuthorize("hasRole('CLIENTE')")
     public String showYapePaymentPage(Model model, Authentication authentication) {
@@ -489,8 +489,9 @@ public class CarritoController {
 
         return "cliente/pago-yape";
     }
-    
-     @PostMapping("/process-yape-payment")
+
+    //Procesar el pago con Yape
+    @PostMapping("/process-yape-payment")
     @PreAuthorize("hasRole('CLIENTE')")
     public String processYapePayment(
             @RequestParam("comprobante") MultipartFile comprobante,
