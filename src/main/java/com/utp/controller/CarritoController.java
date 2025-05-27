@@ -35,7 +35,6 @@ public class CarritoController {
 //
 //    @Autowired
 //    private ContactoService contactoService;
-
     @Autowired
     private SubcategoriaService subcategoriaService;
 
@@ -86,7 +85,7 @@ public class CarritoController {
             Tamano tamano = optionalTamano.get();
             Local local = optionalLocal.get();
 
-            // Obtener stock disponible según el local
+            // Obtener stock disponible según el local y mandar la informacion de cada local
             Double stockDisponible = (local.getNombre().equals("Open Plaza"))
                     ? producto.getStockOpenPlaza() : producto.getStockUDEP();
 
@@ -156,6 +155,7 @@ public class CarritoController {
         return "redirect:/";
     }
 
+    //Metodo para validar el Stock del producto segun el local Seleccionado
     private void actualizarStockLocal(Producto producto, Local local, Double stockARestar) {
         if (local.getNombre().equals("Open Plaza")) {
             producto.setStockOpenPlaza(producto.getStockOpenPlaza() - stockARestar);
@@ -257,6 +257,7 @@ public class CarritoController {
         return "cliente/resumenorden";
     }
 
+    //Metodo añadido para el pago con tarjeta
     @GetMapping("/credit-card")
     @PreAuthorize("hasRole('CLIENTE')")
     public String showCreditCardPaymentPage(Model model, Authentication authentication) {
@@ -435,7 +436,7 @@ public class CarritoController {
         return true;
     }
 
-    //Guardar la orden en EFECTIVO
+    //Guardar la orden en metodo de pago: EN EFECTIVO
     @GetMapping("/saveOrder")
     @PreAuthorize("hasRole('CLIENTE')")
     public String saveOrder(Authentication authentication, RedirectAttributes redirectAttributes) {
@@ -475,6 +476,7 @@ public class CarritoController {
 
     }
 
+    //Metodo para pagar con Yape
     @GetMapping("/yape-payment")
     @PreAuthorize("hasRole('CLIENTE')")
     public String showYapePaymentPage(Model model, Authentication authentication) {
@@ -487,8 +489,9 @@ public class CarritoController {
 
         return "cliente/pago-yape";
     }
-    
-     @PostMapping("/process-yape-payment")
+
+    //Procesar el pago con Yape
+    @PostMapping("/process-yape-payment")
     @PreAuthorize("hasRole('CLIENTE')")
     public String processYapePayment(
             @RequestParam("comprobante") MultipartFile comprobante,
