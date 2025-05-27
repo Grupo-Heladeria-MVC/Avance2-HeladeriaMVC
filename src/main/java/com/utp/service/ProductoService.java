@@ -175,7 +175,7 @@ public class ProductoService {
 
     }
 
-    // ProductoService.java
+    // Implementar la busqueda de productos por nombre 
     public Producto getProductoByNombre(String nombreProducto) {
         return productoRepository.findByNombreProducto(nombreProducto);
     }
