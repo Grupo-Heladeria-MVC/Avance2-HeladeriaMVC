@@ -128,6 +128,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
+                                       <!--  Detalle del pedido -->
                                             <tr th:each="detalle : ${pedido.detalles}">
                                                 <td th:text="${detalle.nombre}"></td>
                                                 <td th:text="${detalle.cantidad}"></td>
