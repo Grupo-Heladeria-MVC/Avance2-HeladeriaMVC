@@ -83,6 +83,7 @@
                          th:data-category="${producto.subcategoria.nombre}">
                         <div class="product-image" th:style="'background-image: url(' + ${producto.imageUrl} + ');'">
                             <div class="icon-container">
+                                <!-- Logica de agregar carritos --->
                                 <span class="heart-icon" title="Añadir a favoritos">🤍</span>
                                 <a th:href="@{/productoHome/{id}(id=${producto.id})}" class="eye-icon-link">
                                     <span class="eye-icon" title="Ver detalles">👁️</span>
