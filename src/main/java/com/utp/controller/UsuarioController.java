@@ -107,7 +107,7 @@ public class UsuarioController {
                     redirectAttributes.addFlashAttribute("error", "La contraseña actual es incorrecta");
                     return "redirect:/cliente/detalle";
                 }
-
+//cambiar de contraseña
                 // Verificar que la nueva contraseña y su confirmación coinciden
                 if (!newPassword.equals(confirmPassword)) {
                     redirectAttributes.addFlashAttribute("error", "Las contraseñas no coinciden");

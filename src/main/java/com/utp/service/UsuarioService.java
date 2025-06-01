@@ -79,7 +79,7 @@ public class UsuarioService {
     public Page<Usuario> findAllClientUsers(Pageable pageable) {
         return usuarioRepository.findByRoles_Nombre("CLIENTE", pageable);
     }
-//proteccion de contraseña
+//proteccion de contraseña para cambiar contra
     public boolean verificarContraseñaActual(Usuario usuario, String contraseñaActual) {
         return passwordEncoder.matches(contraseñaActual, usuario.getPassword());
     }
