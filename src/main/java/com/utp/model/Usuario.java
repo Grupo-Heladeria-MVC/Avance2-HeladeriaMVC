@@ -16,7 +16,7 @@ public class Usuario {
     private Integer id;
 
     private String nombre;
-
+//validaciones
     @Column(nullable = false, unique = true)
     private String username;
 
