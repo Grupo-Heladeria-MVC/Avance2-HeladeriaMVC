@@ -29,7 +29,7 @@ public class PedidoController {
     @Autowired
     private PdfGeneratorService pdfGeneratorService;
 
-    @GetMapping("/mis-pedidos")
+    @GetMapping("/mis-pedidos") //mostrar pedidos a usuario
     @PreAuthorize("hasRole('CLIENTE')")
     public String misPedidos(Model model, Authentication authentication) {
         String username = authentication.getName();
