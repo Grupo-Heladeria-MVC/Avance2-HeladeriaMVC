@@ -49,7 +49,7 @@ public class EstadisticasController {
         calFin.set(Calendar.SECOND, 59);
         calFin.set(Calendar.MILLISECOND, 999);
 
-        // Obtener estadísticas de ventas
+        // Obtener estadísticas de ventas por las fechas seleccionadas 
         Map<String, Object> estadisticas = ventaService.obtenerEstadisticasVentasPorLocal(
             calInicio.getTime(), 
             calFin.getTime()
