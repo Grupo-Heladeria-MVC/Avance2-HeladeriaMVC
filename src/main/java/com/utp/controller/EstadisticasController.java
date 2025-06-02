@@ -61,6 +61,7 @@ public class EstadisticasController {
         model.addAttribute("fechaInicio", fechaInicio);
         model.addAttribute("fechaFin", fechaFin);
 
+        //Mostrar todas las KPIS iniciales del dashboard
         return "administrador/estadisticas";
     }
 }
