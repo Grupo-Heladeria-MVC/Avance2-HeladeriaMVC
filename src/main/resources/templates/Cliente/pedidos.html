@@ -95,7 +95,7 @@
                     <p class="no-orders-text">No se ha hecho ningún pedido todavía.</p>
                     <a th:href="@{/index}" class="explore-button">Explorar los productos</a>
                 </div>
-//pedidos
+                
                 <!-- Sección de pedidos cuando existen -->
                 <div th:unless="${pedidos.isEmpty()}" class="orders-section">
                     <h2 class="section-title">Mis Pedidos</h2>
@@ -111,7 +111,7 @@
                                     <div class="order-status">
                                         <span th:text="${pedido.estado ?: 'En proceso'}"></span>
                                     </div>
-                                    <!-- Nuevo botón para generar boleta -->
+                                    <!-- Nuevo botón para generar boleta y enviar por correo -->
                                     <a th:href="@{/pedidos/generar-boleta/{pedidoId}(pedidoId=${pedido.id})}" 
                                        class="btn btn-primary btn-sm mt-2">
                                         Generar Boleta
