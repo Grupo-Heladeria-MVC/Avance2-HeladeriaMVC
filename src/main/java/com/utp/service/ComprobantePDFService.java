@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 
+//Crear diseño de boleta PDF
 @Service
 public class ComprobantePDFService {
 
