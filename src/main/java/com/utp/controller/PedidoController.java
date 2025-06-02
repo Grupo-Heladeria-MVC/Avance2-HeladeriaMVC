@@ -41,6 +41,7 @@ public class PedidoController {
         return "cliente/pedidos";
     }
 
+    //Metodo para que el cliente pueda generar la boleta PDF
     @GetMapping("/generar-boleta/{pedidoId}")
     @PreAuthorize("hasRole('CLIENTE')")
     public void generarBoletaPDF(@PathVariable Integer pedidoId, HttpServletResponse response) throws IOException {

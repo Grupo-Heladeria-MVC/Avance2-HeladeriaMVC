@@ -1,11 +1,8 @@
+package com.utp.controller;
 
-
-import com.utp.model.Producto;
-import com.utp.repository.CategoriaRepository;
-import com.utp.repository.SubcategoriaRepository;
-import com.utp.service.EmailService;
-import com.utp.service.ProductoService;
-import com.utp.service.SubcategoriaService;
+import com.utp.model.*;
+import com.utp.repository.*;
+import com.utp.service.*;
 import jakarta.persistence.EntityNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;

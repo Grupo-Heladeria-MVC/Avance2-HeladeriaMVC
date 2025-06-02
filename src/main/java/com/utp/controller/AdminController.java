@@ -1,10 +1,10 @@
-package com.utp.heladeriaBreezemvc.controller;
+package com.utp.controller;
 
 import com.itextpdf.text.DocumentException;
-import com.utp.heladeriaBreezemvc.model.*;
-import com.utp.heladeriaBreezemvc.repository.PagoPedidoRepository;
-import com.utp.heladeriaBreezemvc.security.SecurityUserDetails;
-import com.utp.heladeriaBreezemvc.service.*;
+import com.utp.model.*;
+import com.utp.repository.*;
+import com.utp.security.*;
+import com.utp.service.*;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.ByteArrayInputStream;
@@ -322,6 +322,7 @@ public class AdminController {
         }
     }
 
+    //Generar comprobante de pago
     @GetMapping("/generarComprobantePDF/{pagoPedidoId}")
     public ResponseEntity<InputStreamResource> generarComprobantePDF(
             @PathVariable Integer pagoPedidoId,

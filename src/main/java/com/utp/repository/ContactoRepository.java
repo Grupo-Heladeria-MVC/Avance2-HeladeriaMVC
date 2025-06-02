@@ -1,7 +1,6 @@
-package com.utp.heladeriaBreezemvc.repository;
+package com.utp.repository;
 
-import com.utp.heladeriaBreezemvc.model.Asunto;
-import com.utp.heladeriaBreezemvc.model.Contacto;
+import com.utp.model.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
