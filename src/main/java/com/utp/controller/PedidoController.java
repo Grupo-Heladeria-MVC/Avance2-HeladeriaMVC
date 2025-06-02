@@ -29,7 +29,7 @@ public class PedidoController {
     @Autowired
     private PdfGeneratorService pdfGeneratorService;
 
-    @GetMapping("/mis-pedidos")
+    @GetMapping("/mis-pedidos") //mostrar pedidos a usuario
     @PreAuthorize("hasRole('CLIENTE')")
     public String misPedidos(Model model, Authentication authentication) {
         String username = authentication.getName();
@@ -41,6 +41,7 @@ public class PedidoController {
         return "cliente/pedidos";
     }
 
+    //Metodo para que el cliente pueda generar la boleta PDF
     @GetMapping("/generar-boleta/{pedidoId}")
     @PreAuthorize("hasRole('CLIENTE')")
     public void generarBoletaPDF(@PathVariable Integer pedidoId, HttpServletResponse response) throws IOException {

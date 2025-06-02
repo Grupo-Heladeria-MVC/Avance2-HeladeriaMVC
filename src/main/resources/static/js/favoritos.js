@@ -1,7 +1,7 @@
 // Array para almacenar los favoritos
 const favoritos = [];
 
-// Mostrar panel de favoritos
+// Mostrar panel de favoritos...
 function mostrarFavoritos() {
     const favoritosPanel = document.getElementById('favoritos-panel');
     favoritosPanel.classList.add('active');

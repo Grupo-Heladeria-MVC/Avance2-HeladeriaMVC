@@ -3,12 +3,12 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Mis Pedidos</title>
-        <!-- Icono -->
+        <title>Detalles - Cuenta</title>
+          <!-- Icono -->
         <link th:href="@{/imagenes/1.jpg}" rel="icon" type="image/x-icon">
 
         <link th:href="@{/css/escritorio.css}" rel="stylesheet">
-        <link th:href="@{/css/pedidos.css}" rel="stylesheet">
+        <link th:href="@{/css/detalle.css}" rel="stylesheet">
 
     </head>
 
@@ -18,7 +18,7 @@
 
         <div class="account-top-banner">
             <div class="account-banner-wrapper">
-                <h1 class="account-page-title">Mis Pedidos</h1>
+                <h1 class="account-page-title">Detalles De La Cuenta</h1>
                 <a th:href="@{/cliente/home}" class="account-home-link">Inicio</a>
             </div>
         </div>
@@ -82,71 +82,68 @@
             </aside>
 
             <div class="main-content">
-
-                <!-- Mensaje de éxito al realizar un pedido -->
-                <!-- Mensaje de éxito -->
-                <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
-                    <span th:text="${successMessage}"></span>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                <!-- Mensajes de error y éxito -->
+                <div th:if="${error}" class="alert alert-danger" role="alert">
+                    <p th:text="${error}"></p>
+                </div>
+                <div th:if="${mensaje}" class="alert alert-success" role="alert">
+                    <p th:text="${mensaje}"></p>
                 </div>
 
-                <!-- Mensaje cuando no hay pedidos -->
-                <div th:if="${pedidos.isEmpty()}" class="no-orders-section">
-                    <p class="no-orders-text">No se ha hecho ningún pedido todavía.</p>
-                    <a th:href="@{/index}" class="explore-button">Explorar los productos</a>
-                </div>
-                
-                <!-- Sección de pedidos cuando existen -->
-                <div th:unless="${pedidos.isEmpty()}" class="orders-section">
-                    <h2 class="section-title">Mis Pedidos</h2>
-                    <div class="orders-container">
-                        <div th:each="pedido : ${pedidos}" class="order-card">
-                            <div class="order-header">
-                                <span class="order-number">Pedido #<span th:text="${pedido.numero}"></span></span>
-                                <span class="order-date" th:text="${#dates.format(pedido.fechaCreacion, 'dd/MM/yyyy HH:mm')}"></span>
-                            </div>
-                            <div class="order-details">
-                                <div class="order-summary">
-                                    <p class="total-amount">Total: S/ <span th:text="${#numbers.formatDecimal(pedido.total, 0, 'COMMA', 2, 'POINT')}"></span></p>
-                                    <div class="order-status">
-                                        <span th:text="${pedido.estado ?: 'En proceso'}"></span>
-                                    </div>
-                                    <!-- Nuevo botón para generar boleta y enviar por correo -->
-                                    <a th:href="@{/pedidos/generar-boleta/{pedidoId}(pedidoId=${pedido.id})}" 
-                                       class="btn btn-primary btn-sm mt-2">
-                                        Generar Boleta
-                                    </a>
-                                </div>
-                                <div class="order-items">
-                                    <table class="order-items-table">
-                                        <thead>
-                                            <tr>
-                                                <th>Producto</th>
-                                                <th>Cantidad</th>
-                                                <th>Precio</th>
-                                                <th>Subtotal</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                       <!--  Detalle del pedido -->
-                                            <tr th:each="detalle : ${pedido.detalles}">
-                                                <td th:text="${detalle.nombre}"></td>
-                                                <td th:text="${detalle.cantidad}"></td>
-                                                <td>S/ <span th:text="${#numbers.formatDecimal(detalle.precio, 0, 'COMMA', 2, 'POINT')}"></span></td>
-                                                <td>S/ <span th:text="${#numbers.formatDecimal(detalle.total, 0, 'COMMA', 2, 'POINT')}"></span></td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
+                <form th:action="@{/cliente/detalle/actualizar}" method="post" th:object="${usuario}">
+                    <div class="form-group">
+                        <label>Nombre *</label>
+                        <input type="text" th:field="*{nombre}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Dirección *</label>
+                        <input type="text" th:field="*{direccion}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Teléfono *</label>
+                        <input type="text" th:field="*{telefono}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Nombre visible *</label>
+                        <input type="text" th:field="*{username}" required>
+                        <div class="form-hint">Así será como se mostrará tu nombre en la sección de tu cuenta y en las valoraciones</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Dirección de correo electrónico *</label>
+                        <input type="email" th:field="*{email}" required>
+                    </div>
+//cambio de contraseña
+                    <div class="password-section">
+                        <h3>Cambio de contraseña</h3>
+
+                        <div class="form-group">
+                            <label>Contraseña actual (déjalo en blanco para no cambiarla)</label>
+                            <input type="password" name="currentPassword">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Nueva contraseña (déjalo en blanco para no cambiarla)</label>
+                            <input type="password" name="newPassword">
+                            <div class="form-hint">La contraseña debe tener al menos 8 caracteres</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Confirmar nueva contraseña</label>
+                            <input type="password" name="confirmPassword">
                         </div>
                     </div>
-                </div>
+
+                    <button type="submit" class="save-button">Guardar cambios</button>
+                </form>
             </div>
 
 
-        </div>
 
+        </div>
 
         <!-- Footer -->
         <div th:include="cliente/template_header_footer.html::footer"> </div>

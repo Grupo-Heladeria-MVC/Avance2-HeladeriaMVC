@@ -1,8 +1,8 @@
-package com.utp.heladeriaBreezemvc.controller;
+package com.utp.controller;
 
-import com.utp.heladeriaBreezemvc.model.*;
-import com.utp.heladeriaBreezemvc.repository.*;
-import com.utp.heladeriaBreezemvc.service.*;
+import com.utp.model.*;
+import com.utp.repository.*;
+import com.utp.service.*;
 import jakarta.persistence.EntityNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
