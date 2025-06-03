@@ -1,0 +1,151 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #f8f9fa;
+}
+
+
+/* Estilo de la barra lateral */
+.sidebar {
+    width: 280px;
+    height: 100vh;
+    background: linear-gradient(145deg, #FFF9E1, #FFE4B3); /* Amarillo pastel con tono suave */
+    position: fixed;
+    left: 0;
+    top: 0;
+    padding: 25px;
+    transition: all 0.3s ease;
+    box-shadow: 5px 0 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Título de administrador */
+.admin-title {
+    color: #FFA07A; /* Coral claro */
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 50px;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    position: relative;
+    padding-bottom: 15px;
+}
+
+.admin-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50px;
+    height: 3px;
+    background: #FFCC80; /* Naranja pastel */
+    border-radius: 2px;
+}
+
+/* Botones de navegación */
+.nav-button {
+    width: 100%;
+    padding: 15px 20px;
+    margin-bottom: 20px;
+    background: #C7F2E6; /* Verde menta */
+    border: none;
+    border-radius: 10px;
+    color: #333;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.nav-button:hover {
+    background: #90E1C6; /* Verde más oscuro al pasar el cursor */
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Botón de cerrar sesión */
+.cerrar-sesion {
+    background: #FFAB91; /* Naranja coral suave */
+    position: absolute;
+    bottom: 20px;
+    width: calc(100% - 50px);
+}
+
+/* Ajustes responsive */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 220px;
+    }
+
+    .admin-title {
+        font-size: 24px;
+    }
+
+    .nav-button {
+        padding: 12px 15px;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .sidebar {
+        width: 70px;
+        padding: 15px 10px;
+    }
+
+    .admin-title {
+        font-size: 16px;
+        writing-mode: vertical-rl;
+        text-orientation: mixed;
+        transform: rotate(180deg);
+        margin: 20px auto;
+    }
+
+    .nav-button {
+        padding: 12px;
+        font-size: 12px;
+        border-radius: 8px;
+    }
+
+    .nav-button span {
+        display: none;
+    }
+}
+
+/* Etiquetas de subida de archivos */
+.file-upload-label {
+    padding: 15px;
+    background: #E3F2FD; /* Celeste pastel */
+    color: #555;
+    border: 1px dashed #90CAF9; /* Azul pastel */
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.file-upload-label:hover {
+    background: #BBDEFB; /* Azul más intenso */
+    color: #333;
+}
+
+@media (max-width: 480px) {
+    .file-upload-label {
+        flex-direction: column;
+        text-align: center;
+    }
+}

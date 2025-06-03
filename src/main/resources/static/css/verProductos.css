@@ -1,0 +1,730 @@
+@import url('/css/headerAdmin.css');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #f8f9fa;
+}
+
+/* Content Styles (Pagina - Productos) */
+ .main-content {
+    margin-left: 280px;
+    padding: 30px;
+    background-color: #fff;
+    min-height: 100vh;
+}
+
+.page-header {
+    margin-bottom: 2rem;
+    border-bottom: 3px solid #FF9933;
+    padding-bottom: 1rem;
+}
+
+.page-header h1 {
+    color: #333;
+    font-size: 2rem;
+}
+
+.page-header small {
+    color: #666;
+    font-size: 1.2rem;
+}
+
+.btn-create {
+    background: #FFB366;
+    color: #333;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+    margin-bottom: 1rem;
+}
+
+.btn-create:hover {
+    background: #FF9933;
+    transform: translateY(-2px);
+}
+
+/* Estilos para la tabla */
+.table-container {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    margin-bottom: 2rem;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table th {
+    background: #FFB366;
+    color: #333;
+    padding: 15px;
+    text-align: left;
+}
+
+.table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.table tr:hover {
+    background-color: #fff5eb;
+}
+
+/* Estilos para los botones de acción */
+.btn-group {
+    display: flex;
+    gap: 5px;
+}
+
+.btn-edit {
+    background: #4CAF50;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.btn-delete {
+    background: #f44336;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+/* Estilos para la paginación */
+.pagination {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    justify-content: center;
+    margin-top: 1rem;
+}
+
+.pagination .page-item {
+    margin: 0 5px;
+}
+
+.pagination .page-link {
+    background: #FFB366;
+    color: #333;
+    padding: 8px 16px;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.pagination .page-link:hover {
+    background: #FF9933;
+}
+
+.pagination .disabled .page-link {
+    background: #eee;
+    cursor: not-allowed;
+}
+
+/* Mensaje de no productos */
+.alert-info {
+    background: #e3f2fd;
+    color: #0d47a1;
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 1rem;
+}
+
+ /* Responsive */
+ @media (max-width: 768px) {
+    .sidebar {
+        width: 220px;
+    }
+
+    .main-content {
+        margin-left: 220px;
+        padding: 20px;
+    }
+
+    .table-container {
+        overflow-x: auto;
+    }
+}
+
+@media (max-width: 480px) {
+    .sidebar {
+        width: 70px;
+    }
+
+    .main-content {
+        margin-left: 70px;
+        padding: 15px;
+    }
+
+    .page-header h1 {
+        font-size: 1.5rem;
+    }
+
+    .btn-group {
+        flex-direction: column;
+    }
+
+    .pagination {
+        flex-wrap: wrap;
+    }
+}
+/* Contenedor principal */
+.filter-container {
+    display: flex;
+    flex-wrap: wrap; /* Permite que los elementos se ajusten en pantallas pequeñas */
+    gap: 1rem;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    background-color: #f8f8f8;
+    border-radius: 8px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilo para los selectores */
+.filter-container select {
+    padding: 0.8rem 1rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #fff;
+    font-size: 1rem;
+    font-family: 'Poppins', sans-serif;
+    color: #333;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    width: 200px; /* Ancho fijo para mantener consistencia */
+}
+
+.filter-container select:focus {
+    border-color: #f38c31;
+    box-shadow: 0px 0px 8px rgba(243, 140, 49, 0.5);
+    outline: none;
+}
+
+/* Estilo para el botón */
+.filter-container button {
+    padding: 0.8rem 2rem;
+    background-color: #f38c31;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: bold;
+    font-family: 'Poppins', sans-serif;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.filter-container button:hover {
+    background-color: #e0742a;
+    transform: translateY(-2px);
+}
+
+.filter-container button:active {
+    background-color: #c95c22;
+    transform: translateY(0);
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+    .filter-container select {
+        width: 100%; /* Los selects ocupan todo el ancho disponible */
+    }
+
+    .filter-container button {
+        width: 100%; /* El botón ocupa todo el ancho en pantallas pequeñas */
+        text-align: center;
+    }
+}
+/* Contenedor principal del grupo */
+.btn-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem; /* Espaciado entre botones */
+    align-items: center;
+    justify-content: flex-start;
+}
+
+/* Botón de editar */
+.btn-edit {
+    padding: 0.8rem 1.4rem;
+    background-color: #28a745;
+    color: #fff;
+    border: 2px solid #218838;
+    border-radius: 30px; /* Bordes redondeados */
+    text-decoration: none;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.9rem;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.btn-edit:hover {
+    background-color: #218838;
+    border-color: #1e7e34;
+    transform: scale(1.05);
+}
+
+/* Botón de advertencia */
+.btn-warning {
+    padding: 0.8rem 1.4rem;
+    background-color: #ffc107;
+    color: #212529;
+    border: 2px solid #e0a800;
+    border-radius: 30px;
+    text-decoration: none;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.9rem;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.btn-warning:hover {
+    background-color: #e0a800;
+    border-color: #d39e00;
+    transform: scale(1.05);
+}
+
+/* Botón para ver detalles */
+.btn-view {
+    padding: 0.8rem 1.4rem;
+    background-color: #17a2b8;
+    color: #fff;
+    border: 2px solid #138496;
+    border-radius: 30px;
+    text-decoration: none;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.9rem;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.btn-view:hover {
+    background-color: #138496;
+    border-color: #117a8b;
+    transform: scale(1.05);
+}
+
+/* Botón para eliminar */
+.btn-delete {
+    padding: 0.8rem 1.4rem;
+    background-color: #dc3545;
+    color: #fff;
+    border: 2px solid #c82333;
+    border-radius: 30px;
+    text-decoration: none;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.9rem;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.btn-delete:hover {
+    background-color: #c82333;
+    border-color: #bd2130;
+    transform: scale(1.05);
+}
+
+/* Badge para mostrar estado PAGADO */
+.badge.bg-success {
+    background-color: #28a745;
+    color: #fff;
+    padding: 0.6rem 1.2rem;
+    border-radius: 30px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.9rem;
+    font-weight: bold;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+    .btn-group {
+        flex-direction: column; /* Botones apilados en pantallas pequeñas */
+        gap: 0.8rem;
+    }
+}
+/* Estilos generales del formulario */
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem; /* Espaciado entre columnas */
+    margin-bottom: 1rem;
+}
+
+.col-md-3 {
+    flex: 1;
+    min-width: 200px; /* Asegura una buena visualización en pantallas pequeñas */
+}
+
+/* Estilo de etiquetas */
+label {
+    display: block;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #555;
+    margin-bottom: 0.5rem;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Estilo de los campos de formulario */
+.form-control {
+    width: 100%;
+    padding: 0.6rem;
+    font-size: 0.95rem;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    font-family: 'Poppins', sans-serif;
+}
+
+.form-control:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+/* Contenedor de botones */
+.btn-group {
+    display: flex;
+    gap: 0.8rem; /* Espaciado entre botones */
+}
+
+/* Botón de Filtrar */
+.btn.btn-primary {
+    background-color: #007bff;
+    color: #fff;
+    border: 2px solid #007bff;
+    padding: 0.6rem 1.2rem;
+    font-size: 0.95rem;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.btn.btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #004085;
+    transform: scale(1.05);
+}
+
+/* Botón de Generar PDF */
+.btn.btn-success {
+    background-color: #28a745;
+    color: #fff;
+    border: 2px solid #28a745;
+    padding: 0.6rem 1.2rem;
+    font-size: 0.95rem;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.btn.btn-success:hover {
+    background-color: #218838;
+    border-color: #1e7e34;
+    transform: scale(1.05);
+}
+
+/* Alineación vertical */
+.align-self-end {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+    .btn-group {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .col-md-3 {
+        min-width: 100%; /* Hace que cada columna ocupe el ancho completo */
+    }
+}
+/* Contenedor de filas */
+.row.mb-4 {
+    margin-bottom: 2rem; /* Espaciado inferior */
+}
+
+/* Columna general */
+.col-md-6 {
+    padding: 0.5rem;
+}
+
+/* Tarjetas */
+.card {
+    border: none; /* Sin bordes predeterminados */
+    border-radius: 12px; /* Bordes redondeados */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombras suaves */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background: linear-gradient(135deg, #f7f8fa, #ffffff); /* Fondo degradado */
+}
+
+.card:hover {
+    transform: scale(1.03); /* Efecto de zoom */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Sombras más marcadas */
+}
+
+/* Contenido de la tarjeta */
+.card-body {
+    padding: 1.5rem;
+    text-align: center; /* Centrar contenido */
+}
+
+/* Título de las tarjetas */
+.card-body h5 {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #555;
+    margin-bottom: 1rem;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Valores destacados */
+.card-body .h3 {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #007bff; /* Azul atractivo */
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+    .col-md-6 {
+        min-width: 100%; /* Apila las tarjetas en pantallas pequeñas */
+    }
+}
+/* Estilo general de la fila */
+.row {
+    margin-bottom: 2rem;
+}
+
+/* Columnas */
+.col-md-6 {
+    padding: 1rem;
+    display: flex;
+    justify-content: center; /* Centrar gráficas horizontalmente */
+    align-items: center;    /* Centrar gráficas verticalmente */
+}
+
+/* Estilo para los canvas */
+canvas {
+    width: 300%; /* Ocupa todo el ancho disponible de la columna */
+    height: 300%; /* Mantiene la proporción de la gráfica */
+    max-width: 900px; /* Tamaño máximo de las gráficas */
+    max-height: 900px; /* Tamaño máximo de las gráficas */
+    background-color: #f9f9f9; /* Fondo claro */
+    border-radius: 8px; /* Bordes redondeados */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    padding: 1rem; /* Espaciado interno */
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+    .col-md-6 {
+        min-width: 100%; /* Columnas en una sola fila */
+    }
+
+    canvas {
+        max-width: 400px; /* Ajuste de tamaño para pantallas pequeñas */
+        max-height: 400px;
+    }
+}
+.badge-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px; /* Separación entre elementos */
+    margin-bottom: 20px; /* Espacio inferior */
+}
+
+.badge-container .badge {
+    font-size: 14px;
+    padding: 5px 10px;
+    border-radius: 5px;
+    display: inline-block;
+    text-transform: uppercase;
+}
+
+.badge-container .button-group {
+    display: flex;
+    gap: 10px; /* Espaciado horizontal entre botones */
+}
+
+.badge-container .btn-view,
+.badge-container .btn-delete {
+    padding: 8px 16px;
+    font-size: 14px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.badge-container .btn-view {
+    background-color: #117a8b; 
+}
+
+.badge-container .btn-view:hover {
+    background-color: #45a049;
+    transform: translateY(-2px);
+}
+
+.badge-container .btn-delete {
+    background-color: #f44336; /* Rojo para "Eliminar" */
+    color: #fff;
+}
+
+.badge-container .btn-delete:hover {
+    background-color: #e53935;
+    transform: translateY(-2px);
+}
+.page-header h1 {
+    color: #FFA07A;; /* Color para el título principal */
+    font-size: 2.5rem;
+    font-weight: bold;
+}
+
+.page-header h1 small {
+    color: #FFA07A;; /* Color para el texto pequeño */
+    font-size: 1.2rem;
+}
+.btn-danger {
+    background-color: #dc3545;
+    color: white;
+    padding: 12px 20px;
+    font-size: 1.1em;
+    border-radius: 5px;
+    border: none;
+    transition: background-color 0.3s;
+}
+/* Estilos generales para el contenedor */
+.content-container {
+    padding: 20px;
+    background-color: #f9f9f9;
+    max-width: 800px;
+    margin: 0 auto;
+    border-radius: 8px;
+}
+
+/* Estilo para los mensajes de error */
+.alert-message {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.alert-message p {
+    margin: 0;
+}
+
+/* Estilo para la sección del comprobante de pago */
+.payment-receipt {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Títulos dentro del comprobante */
+.receipt-title {
+    font-size: 1.8em;
+    color: #2c3e50;
+    margin-bottom: 10px;
+}
+
+.receipt-subtitle {
+    font-size: 1.4em;
+    color: #34495e;
+    margin-bottom: 20px;
+}
+
+/* Estilo para los detalles del pago */
+.payment-details {
+    font-size: 1.1em;
+    color: #555;
+}
+
+.payment-details p {
+    margin: 8px 0;
+}
+
+/* Estilo para los enlaces de acción (botón) */
+.btn-action {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 1.1em;
+    color: white;
+    background-color: #007bff;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-top: 20px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-action:hover {
+    background-color: #0056b3;
+}
+
+/* Estilos responsivos */
+@media (max-width: 768px) {
+    .content-container {
+        padding: 15px;
+    }
+
+    .receipt-title {
+        font-size: 1.6em;
+    }
+
+    .receipt-subtitle {
+        font-size: 1.2em;
+    }
+
+    .payment-details p {
+        font-size: 1em;
+    }
+
+    .btn-action {
+        width: 100%;
+        font-size: 1em;
+        padding: 12px;
+    }
+}
