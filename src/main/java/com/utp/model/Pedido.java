@@ -21,7 +21,7 @@ public class Pedido {
     //CON CLASE ESTADO PEDIDO (ENUMERATED)
     @Enumerated(EnumType.STRING)
     @Column(name = "estado", length = 20)  // Especifica la longitud máxima
-    private EstadoPedido estado;
+    private EstadoPedido estado; //puede ser cancelado
 
     @ManyToOne
     @JoinColumn(name = "usuario_id")
