@@ -55,7 +55,7 @@ public class PedidoController {
         pdfGeneratorService.generarComprobantePDF(pedido, response);
     }
 
-    @GetMapping("/detalle/{numero}")
+    @GetMapping("/detalle/{numero}") //Actulizador el detalle de pedido
     @PreAuthorize("hasRole('CLIENTE')")
     public String detallePedido(@PathVariable String numero,
             Model model,
