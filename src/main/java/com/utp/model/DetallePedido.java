@@ -35,7 +35,7 @@ public class DetallePedido {
     private PagoPedido pagoPedido;
 
     @Column(name = "estado_pago")
-    private String estadoPago; // Puede ser "PENDIENTE", "PAGADO"
+    private String estadoPago; // Puede ser "PENDIENTE", "PAGADO","Cancelado"
 
     public DetallePedido() {
     }
