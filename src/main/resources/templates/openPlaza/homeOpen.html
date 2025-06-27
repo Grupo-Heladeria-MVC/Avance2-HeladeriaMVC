@@ -1,6 +1,6 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
     <head>
-        <title>Home - Administrador </title>
+        <title>Home - Open Plaza </title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -10,14 +10,14 @@
         <!-- CSS Customizado -->
         <link th:href="@{/css/administrador.css}" rel="stylesheet">
 
-        <!-- Icono -->
+       <!-- Icono -->
         <link th:href="@{/imagenes/1.jpg}" rel="icon" type="image/x-icon">
 
     </head>
     <body>
 
         <!-- Navigation -->
-        <div th:include="administrador/template_header_footer.html::sidebarAdmin"> </div>
+        <div th:include="openPlaza/template_header_footer.html::sidebarAdmin"> </div>
 
         <!-- Contenido principal -->
         <div class="main-content">
@@ -45,14 +45,14 @@
                 <div class="table-section">
                     <div class="table-header">
                         <h2 class="table-title">Pedidos Recientes</h2>
-                        <a th:href="@{/admin/allPedidos}" class="action-button">Ver Todos</a>
+                        <a th:href="@{/open/allPedidos}" class="action-button">Ver Todos</a>
                     </div>
                     <table class="data-table">
                         <thead>
                             <tr>
                                 <th>Número</th>
                                 <th>Cliente</th>
-                            
+                                 <th>Local</th>
                                 <th>Precio Total</th>
                                 <th>Opción</th>
                             </tr>
@@ -61,10 +61,10 @@
                             <tr th:each="pedido : ${pedidosRecientes}">
                                 <td th:text="${pedido.numero}"> </td>
                                 <td th:text="${pedido.usuario.nombre}"> </td>
-                               
+                                 <td th:text="${pedido.detalles[0].local.nombre}">Local</td>
                                 <td th:text="${'S/ ' + #numbers.formatDecimal(pedido.total, 1, 2, 'POINT')}">S/ 120.00</td>
                                 <td>
-                                    <a th:href="@{/admin/pedidos/detalle/{id}(id=${pedido.id})}" class="view-button">Ver</a>
+                                    <a th:href="@{/open/pedidos/detalle/{id}(id=${pedido.id})}" class="view-button">Ver</a>
                                 </td>
                             </tr>
                             <!-- Repite las filas según necesites -->
@@ -75,7 +75,7 @@
                 <div class="table-section">
                     <div class="table-header">
                         <h2 class="table-title">Clientes</h2>
-                        <a th:href="@{/admin/usuarios}" class="action-button">Ver más</a>
+                        <a th:href="@{/open/usuarios}" class="action-button">Ver más</a>
                     </div>
                     <table class="data-table">
                         <thead>

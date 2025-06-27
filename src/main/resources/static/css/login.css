@@ -11,7 +11,7 @@ body{
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color:#eee;
+    background-color: #f0f4f3;
 }
 
 .container{
@@ -135,7 +135,7 @@ body{
     border-radius: 5px;
     cursor: pointer;
     margin-top: 10px;
-    background-color: #FFDDC1; /*<----*/
+    background-color: darksalmon; /*<----*/
     color: white;
 }
 
@@ -160,7 +160,7 @@ body{
     display: flex;
     align-items: center;
     transform:translateX(100%);
-    background-color: #FFDDC1; /*< CAMBIAR EL COLOR A UN TONO DE LA HELADERIA---*/
+    background-color: darksalmon; /*< CAMBIAR EL COLOR A UN TONO DE LA HELADERIA---*/
     transition:transform 0.5s ease-in-out, border-radius 0.5s ease-in-out;
     overflow: hidden;
     border-radius: 50% 0 0 50%;
