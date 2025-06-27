@@ -30,11 +30,11 @@ public class CarritoController {
     @Autowired
     private ProductoService productoService;
 
-//    @Autowired
-//    private AsuntoService asuntoService;
-//
-//    @Autowired
-//    private ContactoService contactoService;
+    @Autowired
+    private AsuntoService asuntoService;
+
+    @Autowired
+    private ContactoService contactoService;
     @Autowired
     private SubcategoriaService subcategoriaService;
 
