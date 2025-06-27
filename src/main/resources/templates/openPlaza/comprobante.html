@@ -24,7 +24,7 @@
     <body>
 
         <!-- Navigation -->
-        <div th:include="administrador/template_header_footer.html::sidebarAdmin"> </div>
+        <div th:include="openPlaza/template_header_footer.html::sidebarAdmin"> </div>
 
         <div class="main-content"> 
 
@@ -33,7 +33,7 @@
             </div>
 
             <div th:if="${pagoPedido}" class="comprobante">
-                <h2>Generar Comprobante</h2>
+                <h2>OPEN PLAZA Generar Comprobante</h2>
                 <h3>Comprobante de Pago</h3>
 
                 <div>
@@ -43,7 +43,7 @@
                     <p><strong>Vuelto:</strong> S/ <span th:text="${#numbers.formatDecimal(pagoPedido.vuelto, 0, 'COMMA', 2, 'POINT')}">0.00</span></p>
                 </div>
 
-                <a th:href="@{/admin/generarComprobantePDF/{id}(id=${pagoPedido.id})}" 
+                <a th:href="@{/open/generarComprobantePDF/{id}(id=${pagoPedido.id})}" 
                    class="btn btn-primary">
                     Generar Comprobante PDF
                 </a>

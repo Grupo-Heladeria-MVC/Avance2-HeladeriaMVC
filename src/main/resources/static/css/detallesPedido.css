@@ -164,29 +164,3 @@ h6 {
         font-size: 0.9rem;
     }
 }
-/* Cambiar colores de los botones */
-.btn-primary {
-    background-color: #FF6A88;
-    border-color: #FF6A88;
-}
-
-.btn-success {
-    background-color: #FF9933;
-    border-color: #FF9933;
-}
-
-.btn-info {
-    background-color: #FFB366;
-    border-color: #FFB366;
-}
-
-.btn-secondary {
-    background-color: #FFE4D6;
-    border-color: #FFE4D6;
-}
-
-/* Iconos */
-.btn i {
-    margin-right: 8px;
-}
-
