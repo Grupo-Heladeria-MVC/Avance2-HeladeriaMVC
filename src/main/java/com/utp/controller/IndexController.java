@@ -27,11 +27,11 @@ public class IndexController {
     @Autowired
     private ProductoService productoService;
 
-//    @Autowired
-//    private AsuntoService asuntoService;
-//
-//    @Autowired
-//    private ContactoService contactoService;
+    @Autowired
+    private AsuntoService asuntoService;
+
+    @Autowired
+    private ContactoService contactoService;
 
     @Autowired
     private SubcategoriaService subcategoriaService;
@@ -103,47 +103,47 @@ public class IndexController {
 
     }
 
-//    @GetMapping("/asuntos")
-//    public String listarAsuntos(Model model) {
-//        List<Asunto> asuntos = asuntoService.getAllAsuntos();
-//        model.addAttribute("asuntos", asuntos);
-//        return "asuntos";  // Vista que muestra la lista de asuntos
-//    }
+    @GetMapping("/asuntos")
+    public String listarAsuntos(Model model) {
+        List<Asunto> asuntos = asuntoService.getAllAsuntos();
+        model.addAttribute("asuntos", asuntos);
+        return "asuntos";  // Vista que muestra la lista de asuntos
+    }
 
-//    @GetMapping("/contacto")
-//    @PreAuthorize("hasRole('CLIENTE')")
-//    public String mostrarFormularioContacto(Model model, Authentication authentication) {
-//        String username = authentication.getName();
-//        Usuario usuario = usuarioService.findByUsername(username);
-//        model.addAttribute("usuario", usuario);
-//        model.addAttribute("contacto", new Contacto());
-//        model.addAttribute("asuntos", asuntoService.getAllAsuntos());  // Lista de asuntos para el formulario
-//        return "cliente/contacto";  // Vista del formulario de contacto
-//    }
+    @GetMapping("/contacto")
+    @PreAuthorize("hasRole('CLIENTE')")
+    public String mostrarFormularioContacto(Model model, Authentication authentication) {
+        String username = authentication.getName();
+        Usuario usuario = usuarioService.findByUsername(username);
+        model.addAttribute("usuario", usuario);
+        model.addAttribute("contacto", new Contacto());
+        model.addAttribute("asuntos", asuntoService.getAllAsuntos());  // Lista de asuntos para el formulario
+        return "cliente/contacto";  // Vista del formulario de contacto
+    }
 
-//    @PostMapping("/contactoRegister")
-//    @PreAuthorize("hasRole('CLIENTE')")
-//    public String registrarMensaje(@RequestParam String nombre,
-//            @RequestParam String email,
-//            @RequestParam Integer asuntoId,
-//            @RequestParam String mensaje,
-//            Model model) {
-//        // Crear el objeto Contacto
-//        Contacto contacto = new Contacto();
-//        contacto.setNombre(nombre);
-//        contacto.setEmail(email);
-//        contacto.setMensaje(mensaje);
-//
-//        // Guardar el contacto en la base de datos con el asunto correspondiente
-//        contactoService.saveContacto(contacto, asuntoId);
-//
-//        // Pasar los datos del cliente al modelo para la vista de agradecimiento
-//        model.addAttribute("nombre", nombre);
-//        model.addAttribute("email", email);
-//
-//        // Redirigir a la página de agradecimiento
-//        return "cliente/agradecimiento";
-//    }
+    @PostMapping("/contactoRegister")
+    @PreAuthorize("hasRole('CLIENTE')")
+    public String registrarMensaje(@RequestParam String nombre,
+            @RequestParam String email,
+            @RequestParam Integer asuntoId,
+            @RequestParam String mensaje,
+            Model model) {
+        // Crear el objeto Contacto
+        Contacto contacto = new Contacto();
+        contacto.setNombre(nombre);
+        contacto.setEmail(email);
+        contacto.setMensaje(mensaje);
+
+        // Guardar el contacto en la base de datos con el asunto correspondiente
+        contactoService.saveContacto(contacto, asuntoId);
+
+        // Pasar los datos del cliente al modelo para la vista de agradecimiento
+        model.addAttribute("nombre", nombre);
+        model.addAttribute("email", email);
+
+        // Redirigir a la página de agradecimiento
+        return "cliente/agradecimiento";
+    }
 
     @GetMapping("/nosotros")
     public String nosotros() {

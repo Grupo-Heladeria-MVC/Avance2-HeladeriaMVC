@@ -10,7 +10,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.file.AccessDeniedException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -33,7 +32,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -42,8 +40,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
-@RequestMapping("/admin")
-public class AdminController {
+@RequestMapping("/udep")
+public class UdepController {
 
     @Autowired
     private ProductoService productoService;
@@ -55,13 +53,16 @@ public class AdminController {
     private ContactoService contactoService; // Añadir esta inyección
 
     @Autowired
-    private PedidoService pedidoService;
-
-    @Autowired
     private PagoPedidoRepository pagoPedidoRepository;
 
     @Autowired
+    private PedidoService pedidoService;
+
+    @Autowired
     private LocalService localService;
+
+    @Autowired
+    private EmailService emailService;
 
     @Autowired
     private DetallePedidoService detallePedidoService;
@@ -71,40 +72,60 @@ public class AdminController {
 
     @Autowired
     private ComprobantePDFService comprobantePDFService;
-
-    @Autowired
+    
+     @Autowired
     private VentaService ventasService;
 
-    @Autowired
-    private VentasPDFService ventasPdfGeneratorService;
-
     @GetMapping("/home")
-    public String homeAdmin(Authentication authentication, Model model) {
-        // Verificar que el usuario tiene rol ADMIN
+    public String homeUdep(Authentication authentication, Model model) {
+        // Verificar que el usuario tiene rol OPEN
         if (!authentication.getAuthorities().stream()
-                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))) {
+                .anyMatch(a -> a.getAuthority().equals("ROLE_UDEP"))) {
             return "redirect:/login?error";
         }
 
         SecurityUserDetails userDetails = (SecurityUserDetails) authentication.getPrincipal();
         Usuario usuarioActual = userDetails.getUsuario();
 
-        // Obtener estadísticas
-        List<Usuario> clientes = usuarioService.findAllClientUsers();
-        int totalPedidos = (int) pedidoService.countAllPedidos();
-        long totalContactos = contactoService.countAllContactos(); // Obtener total de contactos
-        // Calcular total de ingresos SOLO de pedidos PAGADOS
-        double totalIngresos = pedidoService.findAll().stream()
+        // Obtener el local Open Plaza (asumiendo que tienes un método para encontrarlo)
+        Local localUDEP = localService.findByNombre("UDEP");
+        System.out.println("Local UDEP: " + localUDEP);
+
+        // Obtener pedidos específicamente para Open Plaza
+        List<Pedido> pedidosUDEP = pedidoService.findPedidosByLocal(localUDEP);
+        long totalPedidos = pedidosUDEP.size();
+        System.out.println("Total de pedidos: " + pedidosUDEP.size());
+        
+        // Imprimir detalles de cada pedido para verificar
+        pedidosUDEP.forEach(pedido -> {
+            System.out.println("Pedido ID: " + pedido.getId()
+                    + ", Estado: " + pedido.getEstado()
+                    + ", Total: " + pedido.getTotal());
+        });
+        
+           // Calcular ingresos solo de pedidos PAGADOS
+        long totalPedidosPagados = pedidosUDEP.stream()
+                .filter(pedido -> pedido.getEstado() == EstadoPedido.PAGADO)
+                .count();
+        System.out.println("Total de pedidos PAGADOS: " + totalPedidosPagados);
+        
+        double totalIngresos = pedidosUDEP.stream()
                 .filter(pedido -> pedido.getEstado() == EstadoPedido.PAGADO)
                 .mapToDouble(Pedido::getTotal)
                 .sum();
+        System.out.println("Total Ingresos PAGADOS: " + totalIngresos);
+
+        // Obtener estadísticas
+        List<Usuario> clientes = usuarioService.findAllClientUsers();
+        long totalContactos = contactoService.countAllContactos(); // Obtener total de contactos
+
         // Obtener últimos clientes (limitado a 5 por ejemplo)
         List<Usuario> ultimosClientes = clientes.stream()
                 .limit(5)
                 .collect(Collectors.toList());
 
-        // Obtener pedidos recientes
-        List<Pedido> pedidosRecientes = pedidoService.findRecentPedidos();
+        // Obtener pedidos recientes específicamente para Open Plaza
+        List<Pedido> pedidosRecientes = pedidoService.findRecentPedidosByLocal(localUDEP);
 
         model.addAttribute("usuario", usuarioActual);
         model.addAttribute("totalClientes", clientes.size());
@@ -114,7 +135,7 @@ public class AdminController {
         model.addAttribute("ultimosClientes", ultimosClientes);
         model.addAttribute("pedidosRecientes", pedidosRecientes);
 
-        return "administrador/homeAdmin";
+        return "udep/homeUdep";  // Usando la misma plantilla
     }
 
     @GetMapping("/usuarios")
@@ -123,7 +144,7 @@ public class AdminController {
             @RequestParam(defaultValue = "0") int page) {
         // Verificar que el usuario tiene rol ADMIN
         if (!authentication.getAuthorities().stream()
-                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))) {
+                .anyMatch(a -> a.getAuthority().equals("ROLE_UDEP"))) {
             return "redirect:/login?error";
         }
 
@@ -134,7 +155,55 @@ public class AdminController {
         model.addAttribute("totalPages", clientesPage.getTotalPages());
         model.addAttribute("totalClientes", clientesPage.getTotalElements());
 
-        return "administrador/usuarios";
+        return "udep/usuarios";
+    }
+
+    @GetMapping("/contacts")
+    public String showContacts(Model model, @RequestParam(defaultValue = "0") int page) {
+
+        Page<Contacto> contactosPage = contactoService.getAllContactos(PageRequest.of(page, 6));
+        model.addAttribute("contactos", contactosPage);
+        return "udep/verAsuntos";
+
+    }
+
+    @GetMapping("/deleteAsunto/{id}")
+    public String deleteAsuntos(@PathVariable Integer id) {
+        contactoService.deleteContacto(id);
+        return "redirect:/udep/contacts";
+    }
+
+    @GetMapping("/responderAsunto/{id}")
+    public String responderAsunto(@PathVariable Integer id, Model model) {
+        Contacto contacto = contactoService.getContactoById(id);
+        if (contacto == null) {
+            return "redirect:/udep/contacts";  // Redirige si el contacto no existe
+        }
+        model.addAttribute("contacto", contacto);
+        return "udep/responderAsunto"; // Vista para responder
+    }
+
+    @PostMapping("/responderAsunto/{id}")
+    public String enviarRespuesta(@PathVariable Integer id, @RequestParam("respuesta") String respuesta) {
+        if (respuesta == null || respuesta.trim().isEmpty()) {
+            throw new IllegalArgumentException("La respuesta no puede estar vacía.");
+        }
+
+        // Buscar el contacto por ID
+        Contacto contacto = contactoService.getContactoById(id);
+        if (contacto == null) {
+            return "redirect:/udep/contacts";  // Redirigir si no se encuentra el contacto
+        }
+
+        // Guardar la respuesta
+        contacto.setRespuesta(respuesta);
+        contactoService.updateContacto(contacto);
+
+        // Enviar correo de respuesta
+        emailService.enviarCorreoRespuesta(contacto.getEmail(), contacto.getNombre(),
+                contacto.getAsunto().getDescription(), respuesta);
+
+        return "redirect:/udep/contacts"; // Redirigir a la lista de contactos
     }
 
     @GetMapping("/productos")
@@ -150,7 +219,7 @@ public class AdminController {
 
         model.addAttribute("latestProductos", latestProductos);
         model.addAttribute("productos", productosPage);
-        return "administrador/indexAdmin";
+        return "openPlaza/indexAdmin";
     }
 
     @GetMapping("/pedidos/recientes")
@@ -175,10 +244,10 @@ public class AdminController {
         }
 
         model.addAttribute("pedidosRecientes", pedidosRecientes);
-        return "administrador/pedidos";
+        return "udep/pedidos";
     }
 
-    @GetMapping("/pedidos/detalle/{id}")
+       @GetMapping("/pedidos/detalle/{id}")
     public String detallePedido(@PathVariable Integer id, Model model) {
         Pedido pedido = pedidoService.findById(id);
 
@@ -191,7 +260,7 @@ public class AdminController {
 
         model.addAttribute("pedido", pedido);
         model.addAttribute("pagosPedido", pagosPedido);
-        return "administrador/detalle-pedido";
+        return "udep/detalle-pedido";
     }
 
     @GetMapping("/allPedidos")
@@ -199,34 +268,23 @@ public class AdminController {
             Model model,
             Authentication authentication,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(required = false) String local,
-            @RequestParam(required = false) String usuario
+            @RequestParam(required = false) String local
     ) throws AccessDeniedException {
         // Obtener el usuario actual
         Usuario usuarioActual = usuarioService.findByUsername(authentication.getName());
+
         Pageable pageable = PageRequest.of(page, 6);
         Page<DetallePedido> detallesPedidosPage;
 
         // Verificar el rol del usuario
         if (usuarioActual.getRoles().stream().anyMatch(r -> r.getNombre().equals("ADMIN"))) {
-            // Si es ADMIN, permitir filtrar por local, usuario o ambos
-            if (local != null && !local.isEmpty() && usuario != null && !usuario.isEmpty()) {
-                // Filtrar por local y usuario
-                detallesPedidosPage = detallePedidoService.getDetallesPedidosByLocalAndUsuario(local, usuario, pageable);
-            } else if (local != null && !local.isEmpty()) {
-                // Filtrar solo por local
+            // Si es ADMIN, permitir filtrar por local
+            if (local != null && !local.isEmpty()) {
                 detallesPedidosPage = detallePedidoService.getDetallesPedidosByLocal(local, pageable);
-            } else if (usuario != null && !usuario.isEmpty()) {
-                // Filtrar solo por usuario
-                detallesPedidosPage = detallePedidoService.getDetallesPedidosByUsuario(usuario, pageable);
             } else {
-                // Sin filtros
                 detallesPedidosPage = detallePedidoService.getAllDetallesPedidos(pageable);
             }
-
-            // Agregar lista de locales y usuarios para los selectores
-            model.addAttribute("locales", Arrays.asList("Open Plaza", "UDEP"));
-            model.addAttribute("usuarios", detallePedidoService.getAllClientes());
+            model.addAttribute("locales", Arrays.asList("Open Plaza", "UDEP")); // Solo ADMIN puede ver esta opción
         } else if (usuarioActual.getRoles().stream().anyMatch(r -> r.getNombre().equals("OPEN"))) {
             // Personal de OPEN ve solo pedidos de OPEN
             detallesPedidosPage = detallePedidoService.getDetallesPedidosByLocal("Open Plaza", pageable);
@@ -239,14 +297,14 @@ public class AdminController {
 
         // Agregar los pedidos al modelo
         model.addAttribute("detallesPedidos", detallesPedidosPage);
-        return "administrador/verPedidos";
+        return "udep/verPedidos";
     }
 
     @GetMapping("/procesar/{detallePedidoId}")
     public String mostrarFormularioPago(@PathVariable Integer detallePedidoId, Model model) {
         DetallePedido detallePedido = detallePedidoService.findById(detallePedidoId);
         model.addAttribute("detallePedido", detallePedido);
-        return "administrador/procesarPago"; // Nueva vista para procesar pago
+        return "udep/procesarPago"; // Nueva vista para procesar pago
     }
 
     @PostMapping("/procesar")
@@ -260,16 +318,16 @@ public class AdminController {
             PagoPedido pagoGuardado = pagoService.procesarPago(detallePedidoId, montoPagado, authentication);
             // Usa addFlashAttribute en lugar de addAttribute
             redirectAttributes.addFlashAttribute("pagoPedidoId", pagoGuardado.getId());
-            return "redirect:/admin/comprobante";
+            return "redirect:/udep/comprobante";
         } catch (IllegalArgumentException e) {
             // Manejar específicamente montos insuficientes
             redirectAttributes.addFlashAttribute("error", e.getMessage());
-            return "redirect:/admin/procesar/" + detallePedidoId;
+            return "redirect:/udep/procesar/" + detallePedidoId;
         } catch (Exception e) {
             // Log del error completo
             e.printStackTrace();
             redirectAttributes.addFlashAttribute("error", "Error inesperado: " + e.getMessage());
-            return "redirect:/admin/procesar/" + detallePedidoId;
+            return "redirect:/udep/procesar/" + detallePedidoId;
         }
     }
 
@@ -280,7 +338,7 @@ public class AdminController {
 
         if (pagoPedidoId == null) {
             redirectAttributes.addFlashAttribute("error", "No se encontró el ID del pago");
-            return "redirect:/admin/";  // Redirige a una página de inicio o error
+            return "redirect:/udep/";  // Redirige a una página de inicio o error
         }
 
         try {
@@ -288,14 +346,13 @@ public class AdminController {
                     .orElseThrow(() -> new EntityNotFoundException("Pago no encontrado"));
 
             model.addAttribute("pagoPedido", pagoPedido);
-            return "administrador/comprobante";
+            return "udep/comprobante";
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Error al recuperar el comprobante: " + e.getMessage());
-            return "redirect:/admin/";
+            return "redirect:/udep/";
         }
     }
 
-    //Generar comprobante de pago
     @GetMapping("/generarComprobantePDF/{pagoPedidoId}")
     public ResponseEntity<InputStreamResource> generarComprobantePDF(
             @PathVariable Integer pagoPedidoId,
@@ -312,8 +369,8 @@ public class AdminController {
                 .contentType(MediaType.APPLICATION_PDF)
                 .body(new InputStreamResource(bis));
     }
-
-    @GetMapping("/detalles-pago/{detallePedidoId}")
+    
+  @GetMapping("/detalles-pago/{detallePedidoId}")
     public String verDetallesPago(@PathVariable Integer detallePedidoId, Model model) {
         DetallePedido detallePedido = detallePedidoService.findById(detallePedidoId);
 
@@ -332,18 +389,32 @@ public class AdminController {
 
         model.addAttribute("pagoPedido", pagoPedido);
         model.addAttribute("metodoPago", detallePedido.getPedido().getMetodoPago());
-        return "administrador/detalles-pago";
+        return "udep/detalles-pago";
     }
-
+    
     @GetMapping("/ventas")
     public String mostrarVentas(
             Model model,
-            @RequestParam(required = false) String local,
+            Authentication authentication,
             @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaInicio,
             @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaFin,
             @RequestParam(defaultValue = "0") int page
-    ) {
-        // Configurar fechas si no se proporcionan
+    ) throws AccessDeniedException {
+        // Obtener el usuario actual
+        Usuario usuarioActual = usuarioService.findByUsername(authentication.getName());
+
+        // Verificar que sea un usuario de OPEN PLAZA
+        if (!usuarioActual.getRoles().stream().anyMatch(r -> r.getNombre().equals("UDEP"))) {
+            throw new AccessDeniedException("No tiene permisos para ver ventas");
+        }
+
+        Pageable pageable = PageRequest.of(page, 10, Sort.by("pedido.fechaCreacion").descending());
+
+        // Añadir logging para depuración
+        System.out.println("Fecha Inicio recibida: " + fechaInicio);
+        System.out.println("Fecha Fin recibida: " + fechaFin);
+
+        // Si no se proporcionan fechas, usar un rango predeterminado
         if (fechaInicio == null || fechaFin == null) {
             Calendar cal = Calendar.getInstance();
             fechaFin = cal.getTime();
@@ -351,7 +422,7 @@ public class AdminController {
             fechaInicio = cal.getTime();
         }
 
-        // Ajustar horas de las fechas
+        // Establecer las horas para cubrir todo el día
         Calendar calInicio = Calendar.getInstance();
         calInicio.setTime(fechaInicio);
         calInicio.set(Calendar.HOUR_OF_DAY, 0);
@@ -366,77 +437,32 @@ public class AdminController {
         calFin.set(Calendar.SECOND, 59);
         calFin.set(Calendar.MILLISECOND, 999);
 
-        // Configurar paginación
-        Pageable pageable = PageRequest.of(page, 10, Sort.by("pedido.fechaCreacion").descending());
+        // Añadir más logging
+        System.out.println("Fecha Inicio ajustada: " + calInicio.getTime());
+        System.out.println("Fecha Fin ajustada: " + calFin.getTime());
 
-        // Obtener ventas con filtros
-        Page<DetallePedido> ventasPage;
-        if (StringUtils.hasText(local)) {
-            ventasPage = ventasService.obtenerVentasPorLocalAdmin(
-                    local, calInicio.getTime(), calFin.getTime(), pageable
-            );
-        } else {
-            ventasPage = ventasService.obtenerTodasVentasAdmin(
-                    calInicio.getTime(), calFin.getTime(), pageable
-            );
-        }
+        Page<DetallePedido> ventasPage = ventasService.obtenerVentasPorLocal(
+                "UDEP", calInicio.getTime(), calFin.getTime(), pageable
+        );
 
-        // Calcular totales
+        // Logging de resultados
+        System.out.println("Número de ventas encontradas: " + ventasPage.getContent().size());
+
+        // Calcular totales de ventas
         Map<String, Object> totales = ventasService.calcularTotalesVentas(ventasPage);
-
-        // Obtener lista de locales para el filtro
-        List<Local> locales = localService.obtenerTodosLocales();
 
         model.addAttribute("ventas", ventasPage);
         model.addAttribute("totales", totales);
-        model.addAttribute("locales", locales);
-        model.addAttribute("localSeleccionado", local);
         model.addAttribute("fechaInicio", fechaInicio);
         model.addAttribute("fechaFin", fechaFin);
 
-        return "administrador/ventas";
+        return "udep/ventas";
     }
-
-    @GetMapping("/ventas/pdf")
-    public ResponseEntity<InputStreamResource> generarVentasPDF(
-            @RequestParam(required = false) String local,
-            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaInicio,
-            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaFin
-    ) throws DocumentException {
-        // Ajustar horas de las fechas (igual que en el método de ventas)
-        Calendar calInicio = Calendar.getInstance();
-        calInicio.setTime(fechaInicio);
-        calInicio.set(Calendar.HOUR_OF_DAY, 0);
-        calInicio.set(Calendar.MINUTE, 0);
-        calInicio.set(Calendar.SECOND, 0);
-        calInicio.set(Calendar.MILLISECOND, 0);
-
-        Calendar calFin = Calendar.getInstance();
-        calFin.setTime(fechaFin);
-        calFin.set(Calendar.HOUR_OF_DAY, 23);
-        calFin.set(Calendar.MINUTE, 59);
-        calFin.set(Calendar.SECOND, 59);
-        calFin.set(Calendar.MILLISECOND, 999);
-
-        ByteArrayInputStream bis = ventasPdfGeneratorService.generarReporteVentasPDF(
-                local,
-                calInicio.getTime(),
-                calFin.getTime()
-        );
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Disposition", "attachment; filename=reporte_ventas.pdf");
-
-        return ResponseEntity
-                .ok()
-                .headers(headers)
-                .contentType(MediaType.APPLICATION_PDF)
-                .body(new InputStreamResource(bis));
-    }
+    
     
     //verificar el pago de yape
     @GetMapping("/verificar/{detalleId}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('UDEP')")
     public String verificarPagoYape(
             @PathVariable Integer detalleId,
             Model model,
@@ -451,15 +477,15 @@ public class AdminController {
             PagoPedido pagoPedido = pagoPedidoOpt.get();
             model.addAttribute("detalle", detalle);
             model.addAttribute("pagoPedido", pagoPedido);
-            return "administrador/validar-pago";
+            return "udep/validar-pago";
         } else {
             redirectAttributes.addFlashAttribute("errorMessage", "No se encontró información de pago para este pedido");
-            return "redirect:/admin/allPedidos";
+            return "redirect:/udep/allPedidos";
         }
     }
 
     @PostMapping("/validar-pago")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('UDEP')")
     public String validarPago(
             @RequestParam Integer detalleId,
             @RequestParam String accion,
@@ -480,8 +506,9 @@ public class AdminController {
         pedidoService.save(pedido);
 
         redirectAttributes.addFlashAttribute("successMessage", "Pago " + accion + " exitosamente");
-        return "redirect:/admin/allPedidos";
+        return "redirect:/udep/allPedidos";
     }
+
 
 
 }
