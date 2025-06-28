@@ -11,5 +11,8 @@ public interface SubcategoriaRepository extends
 
     //BUSCAR POR EL ID_CATEGORIA
     List<Subcategoria> findByCategoriaId(Integer categoriaId);
+    
+      // Método para buscar por nombre (necesario para el inicializador)
+    Subcategoria findByNombre(String nombre);
 }
 
