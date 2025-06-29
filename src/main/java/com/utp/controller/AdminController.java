@@ -193,33 +193,6 @@ public class AdminController {
         model.addAttribute("pagosPedido", pagosPedido);
         return "administrador/detalle-pedido";
     }
-//    @GetMapping("/allPedidos")
-//    public String showPedidos(Model model, @RequestParam(defaultValue = "0") int page) {
-//        Page<DetallePedido> detallesPedidosPage = detallePedidoService.getAllDetallesPedidos(PageRequest.of(page, 6));
-//        model.addAttribute("detallesPedidos", detallesPedidosPage);
-//        return "administrador/verPedidos";
-//    }
-//    @GetMapping("/allPedidos")
-//    public String showPedidos(
-//            Model model,
-//            @RequestParam(defaultValue = "0") int page,
-//            @RequestParam(required = false) String local
-//    ) {
-//        Pageable pageable = PageRequest.of(page, 6);
-//        Page<DetallePedido> detallesPedidosPage;
-//
-//        if (local != null && !local.isEmpty()) {
-//            // Filtrar por local específico
-//            detallesPedidosPage = detallePedidoService.getDetallesPedidosByLocal(local, pageable);
-//        } else {
-//            // Mostrar todos los pedidos
-//            detallesPedidosPage = detallePedidoService.getAllDetallesPedidos(pageable);
-//        }
-//
-//        model.addAttribute("detallesPedidos", detallesPedidosPage);
-//        model.addAttribute("locales", Arrays.asList("Open Plaza", "UDEP"));
-//        return "administrador/verPedidos";
-//    }
 
     @GetMapping("/allPedidos")
     public String showPedidos(

@@ -1,6 +1,5 @@
 package com.utp.controller;
 
-
 import com.utp.model.Usuario;
 import com.utp.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +20,7 @@ public class UsuarioController {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
-//Datos del usuario
+    //Datos del usuario
     @GetMapping("/perfil")
     @PreAuthorize("hasRole('CLIENTE')")
     public String mostrarPerfil(Model model, Authentication authentication) {

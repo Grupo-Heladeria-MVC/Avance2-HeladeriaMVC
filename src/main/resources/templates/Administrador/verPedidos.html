@@ -83,32 +83,28 @@
                             <td th:text="${detalle.local != null ? detalle.local.nombre : 'No asignado'}"></td>
                             <td th:text="${detalle.pedido.usuario.username}"></td>
                             <td>
-    <div class="btn-group">
-        <!-- Si el pedido está pendiente -->
-        <a th:if="${detalle.estadoPago == null || detalle.estadoPago == 'PENDIENTE'}" 
-           class="btn-edit" 
-           th:href="@{'/admin/procesar/' + ${detalle.id}}">Procesar</a>
+                                <div class="btn-group">
+                                    <!-- Si el pedido está pendiente -->
+                                    <a th:if="${detalle.estadoPago == null || detalle.estadoPago == 'PENDIENTE'}" 
+                                       class="btn-edit" 
+                                       th:href="@{'/admin/procesar/' + ${detalle.id}}">Procesar</a>
+                                    
+                                       <!-- Si el pedido está procesando (específico de Yape) -->
+                                    <a th:if="${detalle.estadoPago == 'PROCESANDO'}" 
+                                       class="btn-warning" 
+                                       th:href="@{'/admin/verificar/' + ${detalle.id}}">Verificar Pago Yape</a>
 
-        <!-- Si el pedido está procesando (específico de Yape) -->
-        <a th:if="${detalle.estadoPago == 'PROCESANDO'}" 
-           class="btn-warning" 
-           th:href="@{'/admin/verificar/' + ${detalle.id}}">Verificar Pago Yape</a>
 
-        <!-- Si el pedido está pagado -->
-        <div th:if="${detalle.estadoPago == 'PAGADO'}" class="badge bg-success">
-            PAGADO
-        </div>
-
-        <a th:if="${detalle.estadoPago == 'PAGADO'}" 
-           th:href="@{'/admin/detalles-pago/' + ${detalle.id}}" 
-           class="btn-view">Ver Detalles</a>
-        <a th:if="${detalle.estadoPago == 'PAGADO'}" 
-           href="#" 
-           class="btn-delete" 
-           onclick="return confirm('¿Estás seguro de eliminar este pedido?')">Eliminar</a>
-    </div>
-</td>
-
+                                    <!-- Si el pedido está pagado -->
+                                    <div th:if="${detalle.estadoPago == 'PAGADO'}" class="badge bg-success">
+                                        PAGADO
+                                        <a th:href="@{'/admin/detalles-pago/' + ${detalle.id}}" class="btn-view ml-2">
+                                            Ver Detalles
+                                        </a>
+                                        <a class="btn-delete" href="#"
+                                           onclick="return confirm('¿Estás seguro de eliminar este pedido?')">Eliminar</a>
+                                    </div>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
