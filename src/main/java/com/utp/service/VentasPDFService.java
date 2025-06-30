@@ -65,7 +65,7 @@ public class VentasPDFService {
         table.setWidths(new float[]{1, 2, 1, 1, 1, 2, 2, 2});
 
         // Encabezados
-        String[] headers = {"ID", "Producto", "Cantidad", "Precio Unit.", "Total", "Fecha Venta", "Contacto del Cliente", "Local"};
+        String[] headers = {"ID", "Producto", "Cantidad", "Precio Unit.", "Total", "Fecha Venta", "Contacto del cliente", "Local"};
         for (String header : headers) {
             PdfPCell headerCell = new PdfPCell(new Phrase(header, FontFactory.getFont(FontFactory.HELVETICA_BOLD, 10)));
             headerCell.setHorizontalAlignment(Element.ALIGN_CENTER);

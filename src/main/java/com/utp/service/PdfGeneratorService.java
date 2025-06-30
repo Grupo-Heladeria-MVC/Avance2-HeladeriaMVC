@@ -58,7 +58,7 @@ public class PdfGeneratorService {
             document.add(fechaPedido);
 
             // Datos del cliente
-            Paragraph cliente = new Paragraph("Cliente: " + pedido.getUsuario().getNombre(), infoFont);
+            Paragraph cliente = new Paragraph("cliente: " + pedido.getUsuario().getNombre(), infoFont);
             cliente.add(Chunk.NEWLINE);
             cliente.add("Email: " + pedido.getUsuario().getEmail());
             cliente.add(Chunk.NEWLINE);

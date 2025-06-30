@@ -10,29 +10,28 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
 
-        // Configuración para recursos estáticos en classpath
-        registry.addResourceHandler("/static/**")
-                .addResourceLocations("classpath:/static/");
-
-        // Alias para servir archivos desde /uploads/
-        registry.addResourceHandler("/uploads/**")
-                .addResourceLocations("file:uploads/");
-
-        // Alias para servir imágenes desde /uploads/imagenes/
+        // Para archivos estáticos (logos, iconos, etc.) - Desde JAR
         registry.addResourceHandler("/imagenes/**")
-                .addResourceLocations("file:uploads/imagenes/");
+                .addResourceLocations("classpath:/static/imagenes/");
 
-        // Alias para servir específicamente archivos desde /uploads/pagos/
         registry.addResourceHandler("/pagos/**")
-                .addResourceLocations("file:uploads/pagos/");
+                .addResourceLocations("classpath:/static/pagos/");
 
-        // Agrega más mappings según necesites
+        // Para uploads dinámicos de usuarios
+        registry.addResourceHandler("/uploads/**")
+                .addResourceLocations("file:./uploads/");
+
+        // Otros recursos estáticos
         registry.addResourceHandler("/assets/**")
                 .addResourceLocations("classpath:/static/assets/");
 
-        registry.addResourceHandler("/img/**")
-                .addResourceLocations("classpath:/static/img/");
+        registry.addResourceHandler("/css/**")
+                .addResourceLocations("classpath:/static/css/");
+
+        registry.addResourceHandler("/js/**")
+                .addResourceLocations("classpath:/static/js/");
 
         System.out.println("ResourceHandlers configurados");
     }
+
 }
