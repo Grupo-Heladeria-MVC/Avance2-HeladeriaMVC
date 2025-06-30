@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +30,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 @RequestMapping("/productos1")
 @PreAuthorize("hasRole('ADMIN')") 
-//ProductoController es para el Administrador
+//ProductoController es para el administrador
 public class ProductoController {
 
     private final Logger LOGGER = LoggerFactory.getLogger(ProductoController.class);
@@ -76,7 +78,7 @@ public class ProductoController {
         if (!file.isEmpty()) {
             try {
                 // Definir directorio de imágenes
-                String uploadsDir = "./uploads/";
+                String uploadsDir = System.getProperty("user.dir") + "/uploads/imagenes/";
                 Path uploadPath = Paths.get(uploadsDir);
 
                 // Crear directorio si no existe
@@ -84,13 +86,17 @@ public class ProductoController {
                     Files.createDirectories(uploadPath);
                 }
 
-                // Guardar imagen
-                String fileName = file.getOriginalFilename();
-                Path filePath = uploadPath.resolve(fileName);
-                Files.copy(file.getInputStream(), filePath);
 
-                // Guardar ruta en el producto
-                producto.setImageUrl("/uploads/" + fileName);
+// Guardar imagen con nombre único para evitar conflictos
+                String originalFileName = file.getOriginalFilename();
+                String fileExtension = originalFileName.substring(originalFileName.lastIndexOf("."));
+                String fileName = System.currentTimeMillis() + fileExtension; // Nombre único
+
+                Path filePath = uploadPath.resolve(fileName);
+                Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+
+// Guardar ruta en el producto
+                producto.setImageUrl("/uploads/imagenes/" + fileName);
 
             } catch (IOException e) {
                 LOGGER.error("Error al procesar imagen", e);

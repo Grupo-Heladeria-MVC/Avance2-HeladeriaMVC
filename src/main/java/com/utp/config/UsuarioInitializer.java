@@ -53,7 +53,7 @@ public class UsuarioInitializer {
             admin.setUsername("admin");
             admin.setPassword(passwordEncoder.encode("admin12345"));
             admin.setEmail("admin@example.com");
-            admin.setNombre("Administrador");
+            admin.setNombre("administrador");
             admin.setEnabled(true);
             admin.setRoles(new HashSet<>());
             admin.getRoles().add(rolAdmin);
