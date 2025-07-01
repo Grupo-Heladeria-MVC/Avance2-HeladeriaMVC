@@ -62,7 +62,7 @@ public class CarritoController {
     @Autowired
     private TamanoService tamanoService;
 
-    //Para almacenar los detalles del Pedido
+    //Para almacenar los detalles del Pedido en Carrito
     List<DetallePedido> detalles = new ArrayList<DetallePedido>();
 
     //Detalles del pedido    
