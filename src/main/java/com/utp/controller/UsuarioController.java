@@ -20,7 +20,7 @@ public class UsuarioController {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
-    //Datos del usuario
+    //Datos del usuario HU-106
     @GetMapping("/perfil")
     @PreAuthorize("hasRole('CLIENTE')")
     public String mostrarPerfil(Model model, Authentication authentication) {

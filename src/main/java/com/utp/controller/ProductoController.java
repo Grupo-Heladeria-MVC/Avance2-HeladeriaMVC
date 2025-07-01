@@ -95,7 +95,7 @@ public class ProductoController {
                 Path filePath = uploadPath.resolve(fileName);
                 Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
 
-// Guardar ruta en el producto
+// Guardar ruta en el producto e imagenes .
                 producto.setImageUrl("/uploads/imagenes/" + fileName);
 
             } catch (IOException e) {
@@ -129,7 +129,7 @@ public class ProductoController {
                     && producto.getStockOpenPlaza() != null
                     && producto.getStockUDEP() != null) {
 
-                // Validar que los stocks no sean negativos
+                // Validar que los stocks no sean negativos .
                 if (producto.getStockActual() < 0
                         || producto.getStockOpenPlaza() < 0
                         || producto.getStockUDEP() < 0) {
@@ -202,7 +202,7 @@ public class ProductoController {
     public String responderAsunto(@PathVariable Integer id, Model model) {
         Contacto contacto = contactoService.getContactoById(id);
         if (contacto == null) {
-            return "redirect:/productos1/contacts";  // Redirige si el contacto no existe
+            return "redirect:/productos1/contacts";  // Redirige si el contacto no existe.
         }
         model.addAttribute("contacto", contacto);
         return "administrador/responderAsunto"; // Vista para responder
@@ -214,13 +214,13 @@ public class ProductoController {
             throw new IllegalArgumentException("La respuesta no puede estar vacía.");
         }
 
-        // Buscar el contacto por ID
+        // Buscar el contacto por ID...
         Contacto contacto = contactoService.getContactoById(id);
         if (contacto == null) {
             return "redirect:/productos1/contacts";  // Redirigir si no se encuentra el contacto
         }
 
-        // Guardar la respuesta
+        // Guardar la respuestaa
         contacto.setRespuesta(respuesta);
         contactoService.updateContacto(contacto);
 
@@ -228,7 +228,7 @@ public class ProductoController {
         emailService.enviarCorreoRespuesta(contacto.getEmail(), contacto.getNombre(),
                 contacto.getAsunto().getDescription(), respuesta);
 
-        return "redirect:/productos1/contacts"; // Redirigir a la lista de contactos
+        return "redirect:/productos1/contacts"; // Redirigir a la lista de contactos 1
     }
 
 }

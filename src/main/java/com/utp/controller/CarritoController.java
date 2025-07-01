@@ -62,7 +62,7 @@ public class CarritoController {
     @Autowired
     private TamanoService tamanoService;
 
-    //Para almacenar los detalles del Pedido
+    //Para almacenar los detalles del Pedido en Carrito
     List<DetallePedido> detalles = new ArrayList<DetallePedido>();
 
     //Detalles del pedido    
@@ -85,7 +85,7 @@ public class CarritoController {
             Tamano tamano = optionalTamano.get();
             Local local = optionalLocal.get();
 
-            // Obtener stock disponible según el local y mandar la informacion de cada local
+            // 1. Obtener stock disponible según el local y mandar la informacion de cada local
             Double stockDisponible = (local.getNombre().equals("Open Plaza"))
                     ? producto.getStockOpenPlaza() : producto.getStockUDEP();
 
@@ -243,13 +243,13 @@ public class CarritoController {
             return "redirect:/error"; // o a una página de error personalizada
         }
 
-        // Verificar si hay detalles en el pedido
+        // Verificar si hay detalles en el pedido o si esta vacio
         if (detalles == null || detalles.isEmpty()) {
             // Manejar el caso cuando no hay detalles
             return "redirect:/error"; // o a una página de error personalizada
         }
 
-        // Añadir atributos al modelo
+        // Añadir atributos al modelo y corregir
         model.addAttribute("cart", detalles);
         model.addAttribute("pedido", pedido);
         model.addAttribute("usuario", usuario);
