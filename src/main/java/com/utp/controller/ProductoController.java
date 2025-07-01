@@ -129,7 +129,7 @@ public class ProductoController {
                     && producto.getStockOpenPlaza() != null
                     && producto.getStockUDEP() != null) {
 
-                // Validar que los stocks no sean negativos
+                // Validar que los stocks no sean negativos .
                 if (producto.getStockActual() < 0
                         || producto.getStockOpenPlaza() < 0
                         || producto.getStockUDEP() < 0) {
