@@ -95,7 +95,7 @@ public class ProductoController {
                 Path filePath = uploadPath.resolve(fileName);
                 Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
 
-// Guardar ruta en el producto e imagenes
+// Guardar ruta en el producto e imagenes .
                 producto.setImageUrl("/uploads/imagenes/" + fileName);
 
             } catch (IOException e) {
