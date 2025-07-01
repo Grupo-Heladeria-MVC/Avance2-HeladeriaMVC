@@ -21,7 +21,7 @@ public class LoginController {
         return "administrador/login";
     }
     
-    // Maneja la redirección después del login exitoso
+    // Maneja la redirección después del login exitoso HU-105
     @GetMapping("/redirect")
     public String redirectBasedOnRole(Authentication authentication) {
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
