@@ -249,7 +249,7 @@ public class CarritoController {
             return "redirect:/error"; // o a una página de error personalizada
         }
 
-        // Añadir atributos al modelo
+        // Añadir atributos al modelo y corregir
         model.addAttribute("cart", detalles);
         model.addAttribute("pedido", pedido);
         model.addAttribute("usuario", usuario);
