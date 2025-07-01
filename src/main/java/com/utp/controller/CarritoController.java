@@ -243,7 +243,7 @@ public class CarritoController {
             return "redirect:/error"; // o a una página de error personalizada
         }
 
-        // Verificar si hay detalles en el pedido
+        // Verificar si hay detalles en el pedido o si esta vacio
         if (detalles == null || detalles.isEmpty()) {
             // Manejar el caso cuando no hay detalles
             return "redirect:/error"; // o a una página de error personalizada
