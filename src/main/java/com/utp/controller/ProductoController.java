@@ -228,7 +228,7 @@ public class ProductoController {
         emailService.enviarCorreoRespuesta(contacto.getEmail(), contacto.getNombre(),
                 contacto.getAsunto().getDescription(), respuesta);
 
-        return "redirect:/productos1/contacts"; // Redirigir a la lista de contactos
+        return "redirect:/productos1/contacts"; // Redirigir a la lista de contactos 1
     }
 
 }
