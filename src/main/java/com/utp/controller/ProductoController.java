@@ -202,7 +202,7 @@ public class ProductoController {
     public String responderAsunto(@PathVariable Integer id, Model model) {
         Contacto contacto = contactoService.getContactoById(id);
         if (contacto == null) {
-            return "redirect:/productos1/contacts";  // Redirige si el contacto no existe
+            return "redirect:/productos1/contacts";  // Redirige si el contacto no existe.
         }
         model.addAttribute("contacto", contacto);
         return "administrador/responderAsunto"; // Vista para responder
