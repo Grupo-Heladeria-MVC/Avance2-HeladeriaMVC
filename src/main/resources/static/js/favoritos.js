@@ -1,13 +1,19 @@
-// Array para almacenar los favoritos acáaaa
+// Array para almacenar los favoritos acáaaaaaaaaaaa
+
+
+
 const favoritos = [];
 
-// Mostrar panel de favoritos(Vista de favoritos)
+// Mostrar panel de favoritos,implementar
+
 function mostrarFavoritos() {
     const favoritosPanel = document.getElementById('favoritos-panel');
     favoritosPanel.classList.add('active');
 }
 
 // Función que muestra el panel del carrito
+
+
 function mostrarCarrito() {
     const carritoPanel = document.getElementById('carrito-panel');
     carritoPanel.classList.add('active');
