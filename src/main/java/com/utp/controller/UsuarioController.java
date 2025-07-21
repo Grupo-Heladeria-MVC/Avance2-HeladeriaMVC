@@ -1,7 +1,9 @@
 package com.utp.controller;
 
 import com.utp.model.Usuario;
-import com.utp.service.UsuarioService;
+import com.utp.service.RegistroResult;
+import com.utp.service.Usuario1Service;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -16,10 +18,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class UsuarioController {
 
     @Autowired
-    private UsuarioService usuarioService;
+    private Usuario1Service usuarioService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
     //Datos del usuario HU-106
     @GetMapping("/perfil")
     @PreAuthorize("hasRole('CLIENTE')")
@@ -71,68 +74,59 @@ public class UsuarioController {
         return "cliente/detalle";
     }
 
-
     //Agregar Validaciones de datos para actualizar informacion personal del cliente
+    // MÉTODO MODIFICADO PARA SER SEGURO
     @PostMapping("/detalle/actualizar")
     @PreAuthorize("hasRole('CLIENTE')")
-    public String actualizarDetalle(
+    public String actualizarDetalleSeguro(
             @ModelAttribute Usuario usuario,
             @RequestParam(required = false) String currentPassword,
             @RequestParam(required = false) String newPassword,
             @RequestParam(required = false) String confirmPassword,
             RedirectAttributes redirectAttributes,
-            Authentication authentication) {
+            Authentication authentication,
+            HttpServletRequest request) {
+        
         try {
             String username = authentication.getName();
             Usuario usuarioActual = usuarioService.findByUsername(username);
-
-            // Actualizar datos básicos
-            usuarioActual.setNombre(usuario.getNombre());
-            usuarioActual.setDireccion(usuario.getDireccion());
-            usuarioActual.setTelefono(usuario.getTelefono());
-            usuarioActual.setEmail(usuario.getEmail());
-            usuarioActual.setUsername(usuario.getUsername());
-
-            // Si se proporcionó una nueva contraseña
+            String ip = usuarioService.obtenerIpCliente(request);
+            
+            // Validación de contraseñas nuevas (esto SÍ podemos mostrar al usuario)
             if (newPassword != null && !newPassword.isEmpty()) {
-                // Verificar que se proporcionó la contraseña actual
-                if (currentPassword == null || currentPassword.isEmpty()) {
-                    redirectAttributes.addFlashAttribute("error", "Debe proporcionar su contraseña actual");
-                    return "redirect:/cliente/detalle";
-                }
-
-                // Verificar que la contraseña actual es correcta
-                if (!usuarioService.verificarContraseñaActual(usuarioActual, currentPassword)) {
-                    redirectAttributes.addFlashAttribute("error", "La contraseña actual es incorrecta");
-                    return "redirect:/cliente/detalle";
-                }
-//cambiar de contraseña
-                // Verificar que la nueva contraseña y su confirmación coinciden
                 if (!newPassword.equals(confirmPassword)) {
-                    redirectAttributes.addFlashAttribute("error", "Las contraseñas no coinciden");
+                    redirectAttributes.addFlashAttribute("error", "Las contraseñas nuevas no coinciden");
                     return "redirect:/cliente/detalle";
                 }
-
-                // Validar la complejidad de la nueva contraseña
+                
                 if (newPassword.length() < 8) {
                     redirectAttributes.addFlashAttribute("error", "La contraseña debe tener al menos 8 caracteres");
                     return "redirect:/cliente/detalle";
                 }
-
-                // Actualizar la contraseña
-                usuarioActual.setPassword(passwordEncoder.encode(newPassword));
             }
-
-            usuarioService.actualizarUsuario(usuarioActual);
-            redirectAttributes.addFlashAttribute("mensaje", "Datos actualizados correctamente");
-
-        } catch (IllegalArgumentException e) {
-            redirectAttributes.addFlashAttribute("error", e.getMessage());
+            
+            // Usar el método seguro para actualizar
+            RegistroResult resultado = usuarioService.actualizarUsuarioSeguro(
+                usuarioActual.getId(), 
+                usuario.getUsername(), 
+                usuario.getEmail(), 
+                currentPassword, 
+                newPassword, 
+                ip
+            );
+            
+            // Solo mostrar mensajes genéricos
+            if (resultado.isExito()) {
+                redirectAttributes.addFlashAttribute("mensaje", resultado.getMensaje());
+            } else {
+                redirectAttributes.addFlashAttribute("error", resultado.getMensaje()); // Siempre genérico
+            }
+            
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("error", "Error al actualizar los datos: " + e.getMessage());
+            redirectAttributes.addFlashAttribute("error", "Error al actualizar los datos");
         }
+        
         return "redirect:/cliente/detalle";
     }
 
 }
-
