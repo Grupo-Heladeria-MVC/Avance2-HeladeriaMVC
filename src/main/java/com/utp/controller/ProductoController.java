@@ -69,6 +69,7 @@ public class ProductoController {
         return "productos/create2";
     }
 
+    //Gestionar catalogo de productos
     @PostMapping("/register")
     public String saveProducto(@ModelAttribute Producto producto,
             @RequestParam("file") MultipartFile file,
