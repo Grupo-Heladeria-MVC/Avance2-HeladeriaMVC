@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import org.springframework.stereotype.Service;
 
+//Generar la boleta
 @Service
 public class PdfGeneratorService {
 
