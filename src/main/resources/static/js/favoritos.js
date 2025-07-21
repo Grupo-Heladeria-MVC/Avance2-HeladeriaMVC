@@ -1,7 +1,7 @@
 // Array para almacenar los favoritos acáaaa
 const favoritos = [];
 
-// Mostrar panel de favoritos
+// Mostrar panel de favoritos(Vista de favoritos)
 function mostrarFavoritos() {
     const favoritosPanel = document.getElementById('favoritos-panel');
     favoritosPanel.classList.add('active');
@@ -54,7 +54,7 @@ function toggleFavorito(heartIcon, productId, productName, productPrice, product
         mostrarMensaje('Producto agregado a favoritos');
     }
     actualizarFavoritos();
-    mostrarFavoritos();
+    mostrarFavoritos();//acá
     actualizarContadorFavoritos();
 }
 
