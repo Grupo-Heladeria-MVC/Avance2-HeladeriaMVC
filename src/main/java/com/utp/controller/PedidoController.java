@@ -67,7 +67,7 @@ public class PedidoController {
         Pedido pedido = pedidoService.findByNumero(numero)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
-        // Verificar que el pedido pertenece al usuario
+        // Verificar que el pedido pertenece al usuario historial
         if (!pedido.getUsuario().getId().equals(usuario.getId())) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         }

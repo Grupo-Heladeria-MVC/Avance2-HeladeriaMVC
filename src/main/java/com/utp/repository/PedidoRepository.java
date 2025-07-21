@@ -33,7 +33,7 @@ public interface PedidoRepository extends JpaRepository<Pedido, Integer> {
     Pedido findPedidoWithDetailsById(@Param("id") Integer id);
     
     
-    // Método para obtener los pedidos con estado ABIERTO
+    // Método para obtener los pedidos con estado ABIERTO usuario
     List<Pedido> findByEstado(EstadoPedido estado);
     
      // Método para encontrar pedidos por local usando DetallePedido

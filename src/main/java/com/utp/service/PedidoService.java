@@ -59,7 +59,7 @@ public class PedidoService {
         return pedidoRepository.findById(pedidoId)
                 .orElseThrow(() -> new EntityNotFoundException("Pedido con ID " + pedidoId + " no encontrado"));
     }
-
+//listas perdidos
     public List<Pedido> findUltimos10Pedidos() {
         return pedidoRepository.findTop10ByOrderByFechaCreacionDesc();
     }
