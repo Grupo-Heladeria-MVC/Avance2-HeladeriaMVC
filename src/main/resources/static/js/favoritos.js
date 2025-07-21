@@ -42,7 +42,7 @@ function toggleFavorito(heartIcon, productId, productName, productPrice, product
         heartIcon.textContent = '🤍';
         mostrarMensaje('Producto eliminado de favoritos');
     } else {
-        // Agregar a favoritos
+        // Agregar a favoritos//acá se agregan
         favoritos.push({
             id: productId,
             nombre: productName,
@@ -54,8 +54,8 @@ function toggleFavorito(heartIcon, productId, productName, productPrice, product
         mostrarMensaje('Producto agregado a favoritos');
     }
     actualizarFavoritos();
-    mostrarFavoritos();//acá
-    actualizarContadorFavoritos();
+    mostrarFavoritos();//acáaa
+    actualizarContadorFavoritos();//contador
 }
 
 // Función para verificar stock desde favoritos
