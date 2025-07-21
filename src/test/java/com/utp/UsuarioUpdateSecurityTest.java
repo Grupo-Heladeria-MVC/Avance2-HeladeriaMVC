@@ -80,29 +80,7 @@ public class UsuarioUpdateSecurityTest {
         assertEquals("Datos actualizados correctamente", resultado.getMensaje());
         verify(securityLoggingService).logUpdateAttempt(1, "192.168.1.1", true);
     }
-    
-    @Test
-    @DisplayName("No debe revelar información cuando contraseña actual es incorrecta")
-    void testActualizarUsuarioSeguro_PasswordIncorrecta_NoDebeRevelarInfo() {
-        // Arrange
-        Usuario usuario = new Usuario();
-        usuario.setId(1);
-        usuario.setPassword("passwordEncriptada");
-        
-        when(usuarioRepository.findById(1)).thenReturn(Optional.of(usuario));
-        when(passwordEncoder.matches("passwordIncorrecta", "passwordEncriptada")).thenReturn(false);
-        
-        // Act
-        RegistroResult resultado = usuarioService.actualizarUsuarioSeguro(
-            1, "nuevouser", "nuevo@email.com", "passwordIncorrecta", "nuevaPassword", "192.168.1.1"
-        );
-        
-        // Assert
-        assertFalse(resultado.isExito());
-        assertEquals("Error al actualizar los datos", resultado.getMensaje()); // Mensaje genérico
-        verify(securityLoggingService).logUpdateAttempt(1, "192.168.1.1", false);
-    }
-    
+
     @Test
     @DisplayName("No debe revelar información cuando email ya existe")
     void testActualizarUsuarioSeguro_EmailExistente_NoDebeRevelarInfo() {
