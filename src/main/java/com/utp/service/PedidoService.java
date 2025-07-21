@@ -184,7 +184,7 @@ public class PedidoService {
         return pedidoRepository.findRecentPedidosByLocal(local, pageable);
     }
 
-    // Método para obtener los pedidos recientes (por ejemplo, los últimos 5)
+    // Método para obtener los pedidos recientes por fechaaaaa (por ejemplo, los últimos 5)
     public List<Pedido> findRecentPedidos() {
         // Puedes usar un Sort para ordenar por fecha de creación en orden descendente
         Pageable pageable = PageRequest.of(0, 5, Sort.by("fechaCreacion").descending());
