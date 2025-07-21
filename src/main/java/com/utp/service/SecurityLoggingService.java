@@ -17,7 +17,8 @@ public class SecurityLoggingService {
             logger.warn("Registration attempt for email: {} from IP: {} - FAILED", 
                        sanitizeEmail(email), ipAddress);
         }
-    }
+    } 
+    
     
     public void logSuspiciousActivity(String ipAddress, String reason) {
         logger.warn("SUSPICIOUS ACTIVITY detected from IP: {} - Reason: {}", ipAddress, reason);
