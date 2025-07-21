@@ -161,7 +161,7 @@ public class IndexController {
 
         List<Producto> productos = productoService.findAll().stream().filter(p -> p.getNombreProducto().contains(nombre))
                 .collect(Collectors.toList());
-        model.addAttribute("productos", productos); //Sistema de filtrado
+        model.addAttribute("productos", productos); //Sistema de filtradooo
 
         return "cliente/homeCliente";
     }
