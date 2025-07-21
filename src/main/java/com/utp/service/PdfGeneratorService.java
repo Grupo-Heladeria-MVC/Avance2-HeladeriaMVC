@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import org.springframework.stereotype.Service;
 
+//Generar la boleta
 @Service
 public class PdfGeneratorService {
 
@@ -48,7 +49,8 @@ public class PdfGeneratorService {
             // Obtener el local de recogida desde el primer detalle del pedido
             Local localRecogida = pedido.getDetalles().get(0).getLocal();
 
-            // Información del pedido
+            // Información del pedidoAAAA
+
             Paragraph infoPedido = new Paragraph();
             infoPedido.add(new Chunk("Número de Pedido: ", infoFont));
             infoPedido.add(new Chunk(pedido.getNumero(), FontFactory.getFont(FontFactory.HELVETICA_BOLD)));

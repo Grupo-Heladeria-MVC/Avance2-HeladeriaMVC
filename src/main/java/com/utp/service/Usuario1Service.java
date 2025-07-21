@@ -2,6 +2,7 @@ package com.utp.service;
 
 import com.utp.model.*;
 import com.utp.repository.*;
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Optional;
 import org.slf4j.Logger;
@@ -116,7 +117,7 @@ public class Usuario1Service {
     }
     
     private boolean esPasswordValida(String password) {
-        return password != null && password.length() >= 6;
+        return password != null && password.length() >= 8; // Cambié de 6 a 8 para mayor seguridad
     }
     
     private boolean esNombreValido(String nombre) {
@@ -134,5 +135,78 @@ public class Usuario1Service {
     public boolean verificarContraseñaActual(Usuario usuario, String contraseñaActual) {
         return passwordEncoder.matches(contraseñaActual, usuario.getPassword());
     }
+    
+     // NUEVO MÉTODO SEGURO
+    public RegistroResult actualizarUsuarioSeguro(Integer userId, String nuevoUsername, 
+            String nuevoEmail, String passwordActual, String nuevaPassword, String ip) {
+        
+        try {
+            // Buscar usuario
+            Optional<Usuario> usuarioOpt = usuarioRepository.findById(userId);
+            if (usuarioOpt.isEmpty()) {
+                securityLoggingService.logUpdateAttempt(userId, ip, false);
+                return new RegistroResult(false, "Error al actualizar los datos");
+            }
+            
+            Usuario usuario = usuarioOpt.get();
+            
+            // Si se quiere cambiar contraseña, verificar la actual
+            if (nuevaPassword != null && !nuevaPassword.isEmpty()) {
+                if (passwordActual == null || passwordActual.isEmpty()) {
+                    securityLoggingService.logUpdateAttempt(userId, ip, false);
+                    return new RegistroResult(false, "Error al actualizar los datos");
+                }
+                
+                if (!passwordEncoder.matches(passwordActual, usuario.getPassword())) {
+                    securityLoggingService.logFailedPasswordAttempt(usuario.getUsername(), ip);
+                    return new RegistroResult(false, "Error al actualizar los datos");
+                }
+                
+                // Validar nueva contraseña
+                if (!esPasswordValida(nuevaPassword)) {
+                    securityLoggingService.logUpdateAttempt(userId, ip, false);
+                    return new RegistroResult(false, "Error al actualizar los datos");
+                }
+                
+                usuario.setPassword(passwordEncoder.encode(nuevaPassword));
+            }
+            
+            // Validar email si cambió
+            if (nuevoEmail != null && !nuevoEmail.equals(usuario.getEmail())) {
+                if (!esEmailValido(nuevoEmail) || usuarioRepository.existsByEmail(nuevoEmail)) {
+                    securityLoggingService.logUpdateAttempt(userId, ip, false);
+                    return new RegistroResult(false, "Error al actualizar los datos");
+                }
+                usuario.setEmail(nuevoEmail);
+            }
+            
+            // Validar username si cambió
+            if (nuevoUsername != null && !nuevoUsername.equals(usuario.getUsername())) {
+                if (usuarioRepository.existsByUsername(nuevoUsername)) {
+                    securityLoggingService.logUpdateAttempt(userId, ip, false);
+                    return new RegistroResult(false, "Error al actualizar los datos");
+                }
+                usuario.setUsername(nuevoUsername);
+            }
+            
+            usuarioRepository.save(usuario);
+            securityLoggingService.logUpdateAttempt(userId, ip, true);
+            return new RegistroResult(true, "Datos actualizados correctamente");
+            
+        } catch (Exception e) {
+            securityLoggingService.logUpdateAttempt(userId, ip, false);
+            return new RegistroResult(false, "Error al actualizar los datos");
+        }
+    }
+    
+    // MÉTODO HELPER PARA OBTENER IP
+    public String obtenerIpCliente(HttpServletRequest request) {
+        String xfHeader = request.getHeader("X-Forwarded-For");
+        if (xfHeader == null) {
+            return request.getRemoteAddr();
+        }
+        return xfHeader.split(",")[0];
+    }
+    
     
 }

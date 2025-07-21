@@ -41,7 +41,7 @@ public class PedidoController {
         return "cliente/pedidos";
     }
 
-    //Metodo para que el cliente pueda generar la boleta PDF
+    //Metodo para que el cliente pueda generar la boleta PDF .
     @GetMapping("/generar-boleta/{pedidoId}")
     @PreAuthorize("hasRole('CLIENTE')")
     public void generarBoletaPDF(@PathVariable Integer pedidoId, HttpServletResponse response) throws IOException {
@@ -67,7 +67,7 @@ public class PedidoController {
         Pedido pedido = pedidoService.findByNumero(numero)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
-        // Verificar que el pedido pertenece al usuario
+        // Verificar que el pedido pertenece al usuario historial
         if (!pedido.getUsuario().getId().equals(usuario.getId())) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         }

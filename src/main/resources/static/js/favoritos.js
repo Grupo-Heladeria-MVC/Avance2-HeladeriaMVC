@@ -1,13 +1,19 @@
-// Array para almacenar los favoritos
+// Array para almacenar los favoritos acáaaaaaaaaaaa
+
+
+
 const favoritos = [];
 
-// Mostrar panel de favoritos
+// Mostrar panel de favoritos,implementar
+
 function mostrarFavoritos() {
     const favoritosPanel = document.getElementById('favoritos-panel');
     favoritosPanel.classList.add('active');
 }
 
 // Función que muestra el panel del carrito
+
+
 function mostrarCarrito() {
     const carritoPanel = document.getElementById('carrito-panel');
     carritoPanel.classList.add('active');
@@ -42,7 +48,7 @@ function toggleFavorito(heartIcon, productId, productName, productPrice, product
         heartIcon.textContent = '🤍';
         mostrarMensaje('Producto eliminado de favoritos');
     } else {
-        // Agregar a favoritos
+        // Agregar a favoritos//acá se agregan
         favoritos.push({
             id: productId,
             nombre: productName,
@@ -54,8 +60,8 @@ function toggleFavorito(heartIcon, productId, productName, productPrice, product
         mostrarMensaje('Producto agregado a favoritos');
     }
     actualizarFavoritos();
-    mostrarFavoritos();
-    actualizarContadorFavoritos();
+    mostrarFavoritos();//acáaa
+    actualizarContadorFavoritos();//contador
 }
 
 // Función para verificar stock desde favoritos
