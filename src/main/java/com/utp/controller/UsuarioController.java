@@ -72,7 +72,7 @@ public class UsuarioController {
     }
 
 
-    //Agregar Validaciones
+    //Agregar Validaciones de datos para actualizar informacion personal del cliente
     @PostMapping("/detalle/actualizar")
     @PreAuthorize("hasRole('CLIENTE')")
     public String actualizarDetalle(
