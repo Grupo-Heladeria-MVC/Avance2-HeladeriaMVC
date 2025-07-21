@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 @Service
 @Transactional
 public class PagoService {
-
+    //detalle del pedido
     @Autowired
     private DetallePedidoService detallePedidoService;
 
@@ -23,7 +23,7 @@ public class PagoService {
 
     @Autowired
     private UsuarioService usuarioService;
-
+//detalle de los pedidos
     @Transactional
     public PagoPedido procesarPago(Integer detallePedidoId, double montoPagado, Authentication authentication) {
         DetallePedido detallePedido = detallePedidoService.findById(detallePedidoId);
