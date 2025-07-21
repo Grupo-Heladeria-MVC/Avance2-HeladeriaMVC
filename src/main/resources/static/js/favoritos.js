@@ -1,4 +1,4 @@
-// Array para almacenar los favoritos
+// Array para almacenar los favoritos acáaaa
 const favoritos = [];
 
 // Mostrar panel de favoritos
